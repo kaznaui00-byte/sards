@@ -40,6 +40,37 @@ class SiteAppearance extends Model
         );
     }
 
+    /**
+     * Build CSS overrides from the values an administrator has saved.
+     */
+    public static function customCss(): string
+    {
+        $saved = self::query()->pluck('value', 'key');
+
+        $variables = array_filter([
+            '--site-bg' => $saved->get('background_color'),
+            '--site-text' => $saved->get('text_color'),
+            '--site-accent' => $saved->get('accent_color'),
+            '--color-tuwaiq-purple' => $saved->get('primary_color'),
+            '--site-width' => $saved->has('content_width') ? $saved->get('content_width').'px' : null,
+            '--site-radius' => $saved->has('card_radius') ? $saved->get('card_radius').'px' : null,
+        ]);
+
+        $css = $variables === []
+            ? ''
+            : ':root{'.collect($variables)->map(fn (string $value, string $name) => "{$name}:{$value}")->implode(';').'}';
+
+        if ($saved->has('background_color')) {
+            $css .= 'body{background:var(--site-bg)!important;color:var(--site-text)!important}';
+        }
+
+        if ($saved->has('font_family')) {
+            $css .= "body,button,input,textarea,select{font-family:'{$saved->get('font_family')}',sans-serif!important}";
+        }
+
+        return $css;
+    }
+
     // حفظ إعداد واحد
     public static function saveSetting(string $key, string $value): void
     {

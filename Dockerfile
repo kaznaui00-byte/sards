@@ -45,4 +45,4 @@ RUN sed -i 's|/var/www/html|/var/www/html/public|g' /etc/apache2/sites-available
 
 EXPOSE 80
 
-CMD ["sh", "-c", "php artisan package:discover --ansi || true; php artisan storage:link --force || true; if [ \"$RUN_MIGRATIONS\" = \"true\" ]; then php artisan migrate --force || true; fi; apache2-foreground"]
+CMD ["sh", "-c", "php artisan package:discover --ansi || true; php artisan storage:link --force || true; if [ \"$RUN_MIGRATIONS\" = \"true\" ]; then php artisan migrate --force || true; fi; if [ -n \"$ADMIN_EMAIL\" ]; then php artisan sard:make-admin \"$ADMIN_EMAIL\" || true; fi; apache2-foreground"]

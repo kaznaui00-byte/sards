@@ -628,6 +628,7 @@ html.high-contrast button {
 
 .btn-primary {
     background: var(--site-text);
+    color: #ffffff;
     border-radius: 4px;
 }
 

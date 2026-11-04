@@ -225,7 +225,12 @@ border-bottom: 1px solid #dedbd3;
         }
 
         .sard-hero-art {
-            min-height: 240px;
+            min-height: 0;
+        }
+
+        .sard-hero-image {
+            height: auto;
+            object-fit: contain;
         }
 
         .sard-grid {

@@ -21,6 +21,8 @@
     </style>
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+
+    <style>{!! \App\Models\SiteAppearance::customCss() !!}</style>
 </head>
 
 <body class="min-h-screen bg-white text-[#29252c]">

@@ -1,6 +1,11 @@
 <?php
 
+use App\Http\Controllers\Admin\AppearanceController;
+use App\Http\Controllers\Admin\ContentController;
+use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\QuoteController as AdminQuoteController;
 use App\Http\Controllers\Admin\SignLanguageController;
+use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\CreatorController;
 use App\Http\Controllers\FavoriteController;
 use App\Http\Controllers\NovelController;
@@ -376,10 +381,26 @@ Route::post('/quotes/{quote}/favorite', [FavoriteController::class, 'toggle'])
 // ADMIN - SIGN LANGUAGE
 // ==========================================
 
-Route::middleware('auth')
+Route::middleware(['auth', 'admin'])
     ->prefix('admin')
     ->name('admin.')
     ->group(function () {
+
+        Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
+
+        Route::resource('quotes', AdminQuoteController::class)->except('show');
+
+        Route::get('/users', [UserController::class, 'index'])->name('users.index');
+        Route::patch('/users/{user}/admin', [UserController::class, 'toggleAdmin'])->name('users.toggle-admin');
+        Route::delete('/users/{user}', [UserController::class, 'destroy'])->name('users.destroy');
+
+        Route::get('/content', [ContentController::class, 'index'])->name('content.index');
+        Route::delete('/content/stories/{story}', [ContentController::class, 'destroyStory'])->name('content.stories.destroy');
+        Route::delete('/content/novels/{novel}', [ContentController::class, 'destroyNovel'])->name('content.novels.destroy');
+
+        Route::get('/appearance', [AppearanceController::class, 'edit'])->name('appearance.edit');
+        Route::put('/appearance', [AppearanceController::class, 'update'])->name('appearance.update');
+        Route::delete('/appearance', [AppearanceController::class, 'reset'])->name('appearance.reset');
 
         Route::get('/sign-language', [
             SignLanguageController::class,

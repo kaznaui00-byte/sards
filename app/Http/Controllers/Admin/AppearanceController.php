@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\SiteAppearance;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 
@@ -16,7 +17,7 @@ class AppearanceController extends Controller
 
         $appearance = SiteAppearance::current();
 
-        return view('admin.appearance.edit', compact('appearance'));
+        return view('admin.appearance.edit', ['page' => 'Admin', 'appearance' => $appearance]);
     }
 
     // حفظ التعديلات
@@ -81,5 +82,17 @@ class AppearanceController extends Controller
         return redirect()
             ->route('admin.appearance.edit')
             ->with('success', 'تم حفظ إعدادات المظهر بنجاح.');
+    }
+
+    /**
+     * Restore the original site appearance.
+     */
+    public function reset(): RedirectResponse
+    {
+        SiteAppearance::query()->delete();
+
+        return redirect()
+            ->route('admin.appearance.edit')
+            ->with('success', 'تمت استعادة المظهر الأصلي.');
     }
 }

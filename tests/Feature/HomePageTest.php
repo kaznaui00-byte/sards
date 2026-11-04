@@ -28,3 +28,32 @@ it('shows the latest text quotes and audio episodes', function () {
         ->assertSee('A quote for the home page')
         ->assertSee('An episode for the home page');
 });
+
+it('renders the quotes and favorites pages when a quote exists', function () {
+    $user = User::factory()->create();
+    $quote = $user->quotes()->create(['text' => 'اقتباس محفوظ', 'post_type' => 'text']);
+
+    $this->actingAs($user)->post(route('quotes.favorite', $quote));
+
+    $this->get(route('quotes.index'))->assertOk()->assertSee('اقتباس محفوظ');
+    $this->get(route('favorites.index'))->assertOk()->assertSee('اقتباس محفوظ');
+});
+
+it('shows login links only to guests', function () {
+    $this->get(route('quotes.index'))->assertSee('إنشاء حساب');
+
+    $this->actingAs(User::factory()->create())
+        ->get(route('quotes.index'))
+        ->assertDontSee('إنشاء حساب')
+        ->assertSee('خروج');
+});
+
+it('shows the admin link only to administrators', function () {
+    $user = User::factory()->create();
+
+    $this->actingAs($user)->get(route('quotes.index'))->assertDontSee('لوحة التحكم');
+
+    $user->forceFill(['is_admin' => true])->save();
+
+    $this->actingAs($user)->get(route('quotes.index'))->assertSee('لوحة التحكم');
+});

@@ -5,7 +5,10 @@
         ['name' => 'الرئيسية', 'route' => 'home'],
         ['name' => 'الاقتباسات', 'route' => 'quotes.index'],
         ['name' => 'البودكاست', 'route' => 'podcasts.index'],
+        ['name' => 'القصص', 'route' => 'stories.index'],
+        ['name' => 'الروايات', 'route' => 'novels.index'],
         ['name' => 'المبدعون', 'route' => 'creators.index'],
+        ['name' => 'لغة الإشارة', 'route' => 'sign-language.translator'],
     ];
 @endphp
 
@@ -75,6 +78,10 @@
                 </svg>
             </a>
             @auth
+                @if (auth()->user()->is_admin)
+                    <a href="{{ route('admin.dashboard') }}" class="quoteit-account">لوحة التحكم</a>
+                @endif
+
                 <a href="{{ url('/profile') }}" class="quoteit-account">
                     حسابي
                 </a>
@@ -86,16 +93,12 @@
                     </button>
                 </form>
             @else
+                <a href="{{ route('login') }}" class="quoteit-account">دخول</a>
 
+                <a href="{{ route('signup') }}" class="quoteit-account">
+                    إنشاء حساب
                 </a>
             @endauth
-    <a href="{{ route('login') }}" class="quoteit-account">دخول</a>
-
-    <a href="{{ route('signup') }}" class="quoteit-account">
-        إنشاء حساب
-    </a>
-
-        
         </div>
     </div>
 </nav>
@@ -263,7 +266,7 @@ html[data-theme="dark"] .quoteit-nav-tools > button {
 
 /* الشاشات المتوسطة */
 
-@media (max-width: 850px) {
+@media (max-width: 1100px) {
     .quoteit-nav-inner {
         flex-wrap: wrap;
         gap: 12px;
@@ -296,8 +299,8 @@ height: 35px;
     .quoteit-nav-links {
         order: 3;
         flex: 0 0 100%;
-        justify-content: space-between;
-        gap: 14px;
+        justify-content: flex-start;
+        gap: 18px;
         flex-wrap: nowrap;
         overflow-x: auto;
         padding-top: 8px;
@@ -311,6 +314,31 @@ height: 35px;
     .quoteit-nav-tools {
         order: 2;
         gap: 7px;
+    }
+
+    .quoteit-nav {
+        position: static;
+    }
+
+    .quoteit-nav-tools > button,
+    .quoteit-nav-tools > .quoteit-search {
+        width: 36px;
+        height: 36px;
+    }
+
+    .quoteit-account,
+    .quoteit-logout {
+        font-size: 13px;
+    }
+}
+
+@media (max-width: 400px) {
+    .quoteit-brand {
+        width: 58px;
+    }
+
+    .quoteit-nav-tools > .quoteit-search {
+        display: none;
     }
 }
 </style>
