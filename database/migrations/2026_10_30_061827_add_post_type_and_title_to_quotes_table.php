@@ -1,4 +1,4 @@
- <?php
+<?php
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -10,11 +10,9 @@ return new class extends Migration
     {
         Schema::table('quotes', function (Blueprint $table) {
             $table->string('post_type')->default('text');
-           Schema::table('quotes', function (Blueprint $table) {
-    $table->string('post_type')->default('text');
-    $table->string('title')->nullable();
-    $table->string('audio_path')->nullable();
-});
+            $table->string('title')->nullable();
+        });
+
         Schema::table('quotes', function (Blueprint $table) {
             $table->text('text')->nullable()->change();
         });
