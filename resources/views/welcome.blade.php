@@ -12,8 +12,8 @@
 
 <style>
     .sard-home {
-        background: #f8f7f3;
-        color: #24241f;
+        background: var(--site-bg);
+        color: var(--site-text);
         min-height: 100vh;
         direction: rtl;
     }
@@ -147,8 +147,8 @@ border-bottom: 1px solid #dedbd3;
     }
 
     .sard-card {
-        background: #fffefa;
-        border: 1px solid #e7e2d9;
+        background: var(--site-surface);
+        border: 1px solid var(--site-border);
         padding: 30px;
         transition: transform .2s, border-color .2s;
     }
@@ -189,7 +189,7 @@ border-bottom: 1px solid #dedbd3;
         padding: 9px 14px;
         background: transparent;
         cursor: pointer;
-        color: #555149;
+        color: var(--site-text);
         font-family: inherit;
     }
 
@@ -198,7 +198,7 @@ border-bottom: 1px solid #dedbd3;
     }
 
     .sard-empty {
-        background: #fffefa;
+        background: var(--site-surface);
         padding: 35px;
         color: #77736b;
         text-align: center;

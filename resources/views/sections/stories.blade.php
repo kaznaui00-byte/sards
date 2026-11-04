@@ -5,10 +5,10 @@
 <style>
 .stories-page {
     direction: rtl;
-    background: #fff;
+    background: var(--site-bg);
     min-height: 100vh;
     padding: 45px 20px;
-    color: #29252c;
+    color: var(--site-text);
 }
 
 .stories-container {
@@ -26,7 +26,7 @@
 }
 
 .stories-heading p {
-    color: #777;
+    color: var(--site-muted);
     line-height: 2;
     margin-top: 10px;
 }
@@ -37,14 +37,14 @@
     gap: 10px;
     margin: 30px 0;
     padding-bottom: 25px;
-    border-bottom: 1px solid #eee;
+    border-bottom: 1px solid var(--site-border);
 }
 
 .story-category {
     text-decoration: none;
-    color: #62576b;
-    background: #fff;
-    border: 1px solid #e6e0e9;
+    color: var(--site-muted);
+    background: var(--site-surface);
+    border: 1px solid var(--site-border);
     padding: 11px 20px;
     border-radius: 30px;
     font-size: 14px;
@@ -53,14 +53,14 @@
 
 .story-category:hover,
 .story-category.active {
-    background: #29252c;
-    color: white;
-    border-color: #29252c;
+    background: var(--site-text);
+    color: var(--site-bg) !important;
+    border-color: var(--site-text);
 }
 
 .story-form {
-    background: #faf9f8;
-    border: 1px solid #eee;
+    background: var(--site-surface);
+    border: 1px solid var(--site-border);
     border-radius: 18px;
     padding: 25px;
     margin-bottom: 35px;
@@ -74,16 +74,16 @@
 
 .story-field {
     width: 100%;
-    border: 1px solid #ddd6e2;
+    border: 1px solid var(--site-border);
     border-radius: 10px;
     padding: 13px;
     margin: 8px 0 17px;
-    background: white;
+    background: var(--site-surface);
     display: block;
 }
 
 .story-field:focus {
-    outline: 2px solid #d8cce2;
+    outline: 2px solid #e7e2d9;
 }
 
 .story-label {
@@ -92,7 +92,7 @@
 }
 
 .story-submit {
-    background: #29252c;
+    background: #24241f;
     color: white;
     border: 0;
     border-radius: 10px;
@@ -107,10 +107,10 @@
 }
 
 .story-card {
-    border: 1px solid #eee;
+    border: 1px solid var(--site-border);
     border-radius: 16px;
     overflow: hidden;
-    background: white;
+    background: var(--site-surface);
     transition: .2s;
 }
 
@@ -121,7 +121,7 @@
 
 .story-card-cover {
     height: 220px;
-    background: #f5f2f6;
+    background: var(--site-soft);
     overflow: hidden;
     display: flex;
     align-items: center;
@@ -145,7 +145,7 @@
 }
 
 .story-card-info p {
-    color: #777;
+    color: var(--site-muted);
     font-size: 14px;
     line-height: 1.9;
 }
@@ -154,7 +154,7 @@
     display: inline-block;
     margin-top: 15px;
     text-decoration: none;
-    color: #806a91;
+    color: #94745b;
     font-weight: bold;
 }
 
@@ -173,9 +173,28 @@
 }
 
 .story-empty {
-    color: #888;
+    grid-column: 1 / -1;
+    background: var(--site-surface);
+    border: 1px solid var(--site-border);
+    border-radius: 14px;
+    color: var(--site-muted);
+    line-height: 2;
     padding: 35px 15px;
     text-align: center;
+}
+
+.story-login {
+    background: var(--site-soft);
+    border: 1px solid var(--site-border);
+    border-radius: 14px;
+    color: var(--site-muted);
+    margin-bottom: 30px;
+    padding: 28px 20px;
+    text-align: center;
+}
+
+.story-login p {
+    margin-bottom: 14px;
 }
 
 @media(max-width:600px) {
@@ -333,9 +352,10 @@
 
     @else
 
-        <p style="margin-bottom:30px;color:#777;">
-            سجلي الدخول حتى تتمكني من نشر قصتك.
-        </p>
+        <div class="story-login">
+            <p>سجلي الدخول حتى تتمكني من نشر قصتك.</p>
+            <a href="{{ route('login') }}" class="btn-primary">تسجيل الدخول</a>
+        </div>
 
     @endauth
 
@@ -365,7 +385,7 @@
 
         </h2>
 
-        <p style="color:#888;font-size:14px;margin-top:8px;">
+        <p style="color:var(--site-muted);font-size:14px;margin-top:8px;">
             اكتشفي حكايات كتبها أعضاء سرد.
         </p>
 
@@ -397,7 +417,7 @@
 
                 <div class="story-card-info">
 
-                    <span style="font-size:13px;color:#806a91;font-weight:bold;">
+                    <span style="font-size:13px;color:#94745b;font-weight:bold;">
                         {{ $story->story_type === 'short_story' ? 'قصة قصيرة' : 'قصة طويلة' }}
                     </span>
 

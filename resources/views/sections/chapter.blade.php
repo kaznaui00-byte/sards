@@ -3,11 +3,11 @@
 @section('title', $chapter->title.' | '.$novel->title)
 
 @section('content')
-<div dir="rtl" style="background:#faf9f6; min-height:100vh; padding:40px 20px; color:#29252c;">
+<div dir="rtl" style="background:var(--site-bg); min-height:100vh; padding:40px 20px; color: var(--site-text);">
     <article style="max-width:760px; margin:auto;">
-        <a href="{{ route('novels.show', $novel) }}" style="color:#70518b; text-decoration:none;">← {{ $novel->title }}</a>
+        <a href="{{ route('novels.show', $novel) }}" style="color:#94745b; text-decoration:none;">← {{ $novel->title }}</a>
 
-        <p style="margin-top:25px; color:#806a91; font-size:14px; font-weight:bold;">الفصل {{ $chapter->chapter_number }}</p>
+        <p style="margin-top:25px; color:#94745b; font-size:14px; font-weight:bold;">الفصل {{ $chapter->chapter_number }}</p>
         <h1 style="font-size:30px; font-weight:800; margin:8px 0 25px;">{{ $chapter->title }}</h1>
 
         <div style="white-space:pre-line; line-height:2.2; font-size:18px;">{{ $chapter->content }}</div>

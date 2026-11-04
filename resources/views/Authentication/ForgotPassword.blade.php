@@ -8,7 +8,7 @@
 
     <h2>استعادة كلمة المرور</h2>
 
-    <p class="mb-5 text-center text-white">
+    <p class="mb-5 text-center text-gray-600">
         أدخلي بريدك الإلكتروني لإرسال رابط إعادة التعيين.
     </p>
 

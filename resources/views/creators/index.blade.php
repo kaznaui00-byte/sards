@@ -7,7 +7,7 @@
 <div class="container mx-auto max-w-6xl px-4 py-10">
 
     <header class="mb-10">
-        <p class="text-sm font-semibold text-purple-500">
+        <p class="text-sm font-semibold text-[var(--site-accent)]">
             SARD COMMUNITY
         </p>
 
@@ -70,7 +70,7 @@
                     <img
                         src="{{ $creator->avatar
                             ? \App\Support\Media::url($creator->avatar)
-                            : asset('images/profile.jpeg') }}"
+                            : asset('images/default-avatar.svg') }}"
                         alt="Creator profile"
                         class="h-16 w-16 rounded-full object-cover"
                     >
@@ -95,7 +95,7 @@
 
                     @foreach (($creator->creator_specialties ?? []) as $specialty)
 
-                        <span class="rounded-full bg-purple-100 px-3 py-1 text-xs text-purple-800">
+                        <span class="rounded-full bg-[var(--site-soft)] px-3 py-1 text-xs text-[var(--site-accent)]">
                             {{ $specialties[$specialty] ?? $specialty }}
                         </span>
 

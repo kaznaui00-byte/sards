@@ -7,7 +7,7 @@
 <div class="container mx-auto max-w-4xl px-4 py-10">
 
     <a href="{{ route('creators.index') }}"
-       class="mb-8 inline-block text-purple-600">
+       class="mb-8 inline-block text-[var(--site-accent)]">
         ← العودة إلى المبدعين
     </a>
 
@@ -18,7 +18,7 @@
             <img
                 src="{{ $user->avatar
                     ? \App\Support\Media::url($user->avatar)
-                    : asset('images/profile.jpeg') }}"
+                    : asset('images/default-avatar.svg') }}"
                 alt="Creator profile"
                 class="h-28 w-28 rounded-full border object-cover"
             >
@@ -58,7 +58,7 @@
 
             @foreach (($user->creator_specialties ?? []) as $specialty)
 
-                <span class="rounded-full bg-purple-100 px-4 py-2 text-sm text-purple-800">
+                <span class="rounded-full bg-[var(--site-soft)] px-4 py-2 text-sm text-[var(--site-accent)]">
                     {{ $labels[$specialty] ?? $specialty }}
                 </span>
 

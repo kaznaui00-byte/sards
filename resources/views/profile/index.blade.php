@@ -26,10 +26,10 @@
 
 <div class="mx-auto max-w-4xl px-4 py-8">
 
-    <div class="mb-8 rounded-3xl bg-gradient-to-br from-violet-950 to-purple-800 p-8 text-white">
-        <p class="text-sm text-purple-200">YOUR CREATOR SPACE</p>
+    <div class="mb-8 rounded-3xl bg-gradient-to-br from-[#29272b] to-[#5c4c3e] p-8 text-white">
+        <p class="text-sm text-[#e7e2d9]">YOUR CREATOR SPACE</p>
         <h1 class="mt-2 text-3xl font-bold">ملفي الشخصي</h1>
-        <p class="mt-3 text-purple-100">
+        <p class="mt-3 text-[#e7e2d9]">
             عرّف الآخرين بك وبإبداعك ومواهبك.
         </p>
     </div>
@@ -64,7 +64,7 @@
 
             <div class="mb-5">
                 <img
-                    src="{{ $user->avatar ? \App\Support\Media::url($user->avatar) : asset('images/profile.jpeg') }}"
+                    src="{{ $user->avatar ? \App\Support\Media::url($user->avatar) : asset('images/default-avatar.svg') }}"
                     alt="Profile Picture"
                     class="mb-4 h-24 w-24 rounded-full border object-cover"
                 >
@@ -149,7 +149,7 @@
         {{-- Creator Specialties --}}
         <section class="rounded-2xl border p-6">
 
-            <p class="mb-2 text-sm font-bold text-violet-600">
+            <p class="mb-2 text-sm font-bold text-[var(--site-accent)]">
                 CREATOR PROFILE
             </p>
 
@@ -166,7 +166,7 @@
 
                 @foreach ($specialties as $key => $label)
 
-                    <label class="flex cursor-pointer items-center gap-3 rounded-xl border p-4 transition hover:border-purple-400">
+                    <label class="flex cursor-pointer items-center gap-3 rounded-xl border p-4 transition hover:border-[#b9a38d]">
 
                         <input
                             type="checkbox"
@@ -207,7 +207,7 @@
 
 
         {{-- Creator Visibility --}}
-        <section class="rounded-2xl border border-purple-300 bg-purple-50 p-6">
+        <section class="rounded-2xl border border-[#b9a38d] bg-[var(--site-soft)] p-6">
 
             <input
                 type="hidden"
@@ -243,7 +243,7 @@
 
         <button
             type="submit"
-            class="w-full rounded-xl bg-violet-700 px-6 py-4 font-bold text-white transition hover:bg-violet-600"
+            class="w-full rounded-xl bg-[#29272b] px-6 py-4 font-bold text-white transition hover:bg-[#3d3a35]"
         >
             حفظ التعديلات
         </button>
@@ -282,7 +282,7 @@
 
                     <a
                         href="{{ route('quotes.edit', $quote) }}"
-                        class="mt-3 inline-block text-violet-700"
+                        class="mt-3 inline-block text-[var(--site-accent)]"
                     >
                         تعديل الاقتباس
                     </a>

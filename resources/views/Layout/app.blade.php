@@ -25,7 +25,7 @@
     <style>{!! \App\Models\SiteAppearance::customCss() !!}</style>
 </head>
 
-<body class="min-h-screen bg-white text-[#29252c]">
+<body class="min-h-screen bg-[var(--site-bg)] text-[var(--site-text)]">
 
     <x-navbar :page="$page ?? ''" />
 
@@ -33,7 +33,7 @@
         @yield('content')
     </main>
 
-    <footer class="border-t border-gray-200 bg-white">
+    <footer class="border-t border-gray-200 bg-[var(--site-surface)]">
         <div class="mx-auto max-w-7xl px-6 py-8 text-center">
             <p class="text-xl font-black">سرد</p>
 
@@ -41,7 +41,7 @@
                 مساحة للكلمة والصوت والحكاية والإبداع.
             </p>
 
-            <p class="mt-4 text-xs text-gray-400">
+            <p class="mt-4 text-xs text-gray-500">
                 جميع الحقوق محفوظة © سرد
             </p>
         </div>

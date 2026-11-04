@@ -18,9 +18,9 @@ class SiteAppearance extends Model
     {
         return [
             'primary_color' => '#29272b',
-            'accent_color' => '#a58c70',
-            'background_color' => '#ffffff',
-            'text_color' => '#29272b',
+            'accent_color' => '#94745b',
+            'background_color' => '#f8f7f3',
+            'text_color' => '#24241f',
             'font_family' => 'Tahoma',
             'content_width' => '1200',
             'card_radius' => '14',

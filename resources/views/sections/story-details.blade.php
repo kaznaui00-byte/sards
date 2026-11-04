@@ -5,10 +5,10 @@
 <style>
 .story-reading {
     direction: rtl;
-    background: #fff;
+    background: var(--site-surface);
     min-height: 100vh;
     padding: 40px 20px;
-    color: #29252c;
+    color: var(--site-text);
 }
 
 .story-container {
@@ -18,7 +18,7 @@
 
 .story-back {
     display: inline-block;
-    color: #806a91;
+    color: #94745b;
     text-decoration: none;
     margin-bottom: 30px;
     font-weight: bold;
@@ -40,24 +40,24 @@
 }
 
 .story-meta {
-    color: #888;
+    color: var(--site-muted);
     font-size: 14px;
     margin-bottom: 25px;
 }
 
 .story-summary {
-    background: #f8f6fa;
+    background: var(--site-soft);
     padding: 20px;
     border-radius: 14px;
     line-height: 2;
     margin-bottom: 35px;
-    color: #5e5665;
+    color: var(--site-muted);
 }
 
 .story-content {
     font-size: 18px;
     line-height: 2.3;
-    color: #38323d;
+    color: var(--site-text);
     white-space: pre-wrap;
     overflow-wrap: anywhere;
 }
@@ -88,7 +88,7 @@
             >
         @endif
 
-        <div style="color:#806a91;font-weight:bold;font-size:14px;">
+        <div style="color:#94745b;font-weight:bold;font-size:14px;">
             {{ $story->story_type === 'short_story' ? 'قصة قصيرة' : 'قصة طويلة' }}
         </div>
 

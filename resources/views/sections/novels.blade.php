@@ -5,8 +5,8 @@
 <style>
     .novels-page {
         direction: rtl;
-        color: #29252c;
-        background: #faf9f6;
+        color: var(--site-text);
+        background: var(--site-bg);
         min-height: 100vh;
         padding: 45px 20px;
     }
@@ -27,8 +27,8 @@
         width: 65px;
         height: 65px;
         border-radius: 18px;
-        background: #eee8f5;
-        color: #72518b;
+        background: #e7e2d9;
+        color: #94745b;
         display: grid;
         place-items: center;
         flex-shrink: 0;
@@ -41,7 +41,7 @@
     }
 
     .novels-description {
-        color: #77717b;
+        color: var(--site-muted);
         font-size: 16px;
         line-height: 2;
         max-width: 650px;
@@ -53,21 +53,21 @@
         flex-wrap: wrap;
         margin: 35px 0;
         padding-bottom: 22px;
-        border-bottom: 1px solid #e9e5eb;
+        border-bottom: 1px solid var(--site-border);
     }
 
     .novels-category {
         padding: 10px 20px;
-        border: 1px solid #e5dfe9;
+        border: 1px solid var(--site-border);
         border-radius: 30px;
-        color: #655b6b;
+        color: var(--site-muted);
         font-size: 14px;
     }
 
     .novels-category.active {
-        background: #29252c;
+        background: #24241f;
         color: white;
-        border-color: #29252c;
+        border-color: #24241f;
     }
 
     .novels-section-heading {
@@ -84,13 +84,13 @@
     }
 
     .novels-section-heading span {
-        color: #99919d;
+        color: var(--site-muted);
         font-size: 13px;
     }
 
     .novels-empty {
-        background: white;
-        border: 1px solid #eee9ef;
+        background: var(--site-surface);
+        border: 1px solid var(--site-border);
         border-radius: 20px;
         padding: 65px 20px;
         text-align: center;
@@ -99,8 +99,8 @@
     .novels-empty-icon {
         width: 75px;
         height: 75px;
-        background: #f3eff6;
-        color: #806a91;
+        background: var(--site-soft);
+        color: #94745b;
         border-radius: 22px;
         display: grid;
         place-items: center;
@@ -114,7 +114,7 @@
     }
 
     .novels-empty p {
-        color: #89828d;
+        color: var(--site-muted);
         font-size: 14px;
         line-height: 2;
     }
@@ -144,7 +144,7 @@
 
             <div>
                 <h1>الروايات</h1>
-                <div style="color:#806a91; font-size:13px; font-weight:600;">
+                <div style="color:#94745b; font-size:13px; font-weight:600;">
                     سرد · عالم الأدب
                 </div>
             </div>
@@ -179,7 +179,7 @@
         </nav>
 
         @auth
-            <details class="mb-8 rounded-2xl border border-[#eee7f1] bg-white p-5" @if ($errors->any()) open @endif>
+            <details class="mb-8 rounded-2xl border border-[var(--site-border)] bg-white p-5" @if ($errors->any()) open @endif>
                 <summary class="cursor-pointer font-bold">＋ أضف روايتك</summary>
 
                 <form action="{{ route('novels.store') }}" method="POST" enctype="multipart/form-data" class="mt-4 space-y-3">
@@ -187,26 +187,26 @@
 
                     <div>
                         <label for="novel-title" class="mb-1 block font-bold">عنوان الرواية</label>
-                        <input id="novel-title" name="title" value="{{ old('title') }}" maxlength="150" required class="w-full rounded-lg border border-[#e9e7e4] bg-white px-3 py-2.5">
+                        <input id="novel-title" name="title" value="{{ old('title') }}" maxlength="150" required class="w-full rounded-lg border border-[var(--site-border)] bg-white px-3 py-2.5">
                         @error('title') <p class="mt-1 text-sm text-red-700">{{ $message }}</p> @enderror
                     </div>
 
                     <div>
                         <label for="novel-description" class="mb-1 block font-bold">نبذة عن الرواية</label>
-                        <textarea id="novel-description" name="description" rows="4" maxlength="5000" class="w-full rounded-lg border border-[#e9e7e4] bg-white px-3 py-2.5">{{ old('description') }}</textarea>
+                        <textarea id="novel-description" name="description" rows="4" maxlength="5000" class="w-full rounded-lg border border-[var(--site-border)] bg-white px-3 py-2.5">{{ old('description') }}</textarea>
                         @error('description') <p class="mt-1 text-sm text-red-700">{{ $message }}</p> @enderror
                     </div>
 
                     <div class="grid gap-3 sm:grid-cols-3">
                         <div>
                             <label for="novel-genre" class="mb-1 block font-bold">التصنيف</label>
-                            <input id="novel-genre" name="genre" value="{{ old('genre', 'عام') }}" maxlength="50" required class="w-full rounded-lg border border-[#e9e7e4] bg-white px-3 py-2.5">
+                            <input id="novel-genre" name="genre" value="{{ old('genre', 'عام') }}" maxlength="50" required class="w-full rounded-lg border border-[var(--site-border)] bg-white px-3 py-2.5">
                             @error('genre') <p class="mt-1 text-sm text-red-700">{{ $message }}</p> @enderror
                         </div>
 
                         <div>
                             <label for="novel-length" class="mb-1 block font-bold">الطول</label>
-                            <select id="novel-length" name="length_type" class="w-full rounded-lg border border-[#e9e7e4] bg-white px-3 py-2.5">
+                            <select id="novel-length" name="length_type" class="w-full rounded-lg border border-[var(--site-border)] bg-white px-3 py-2.5">
                                 <option value="short" @selected(old('length_type') === 'short')>قصيرة</option>
                                 <option value="long" @selected(old('length_type') === 'long')>طويلة</option>
                             </select>
@@ -214,7 +214,7 @@
 
                         <div>
                             <label for="novel-status" class="mb-1 block font-bold">الحالة</label>
-                            <select id="novel-status" name="status" class="w-full rounded-lg border border-[#e9e7e4] bg-white px-3 py-2.5">
+                            <select id="novel-status" name="status" class="w-full rounded-lg border border-[var(--site-border)] bg-white px-3 py-2.5">
                                 <option value="ongoing" @selected(old('status') === 'ongoing')>مستمرة</option>
                                 <option value="completed" @selected(old('status') === 'completed')>مكتملة</option>
                             </select>
@@ -223,7 +223,7 @@
 
                     <div>
                         <label for="novel-cover" class="mb-1 block font-bold">صورة الغلاف (اختياري، بحد أقصى 4 ميجابايت)</label>
-                        <input id="novel-cover" type="file" name="cover_image" accept=".jpg,.jpeg,.png,.webp" class="block w-full rounded-lg border border-[#e9e7e4] bg-white p-2.5">
+                        <input id="novel-cover" type="file" name="cover_image" accept=".jpg,.jpeg,.png,.webp" class="block w-full rounded-lg border border-[var(--site-border)] bg-white p-2.5">
                         @error('cover_image') <p class="mt-1 text-sm text-red-700">{{ $message }}</p> @enderror
                     </div>
 
@@ -249,15 +249,15 @@
         @else
             <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
                 @foreach ($novels as $novel)
-                    <a href="{{ route('novels.show', $novel) }}" class="block overflow-hidden rounded-2xl border border-[#eee7f1] bg-white" style="color:#29252c; text-decoration:none;">
+                    <a href="{{ route('novels.show', $novel) }}" class="block overflow-hidden rounded-2xl border border-[var(--site-border)] bg-white" style="color: var(--site-text); text-decoration:none;">
                         @if ($novel->cover_image_path)
                             <img src="{{ \App\Support\Media::url($novel->cover_image_path) }}" alt="غلاف {{ $novel->title }}" class="h-48 w-full object-cover">
                         @endif
 
                         <div class="p-4">
-                            <p class="text-xs font-bold text-[#806a91]">{{ $novel->genre }}</p>
+                            <p class="text-xs font-bold text-[var(--site-accent)]">{{ $novel->genre }}</p>
                             <h3 class="mt-1 text-lg font-extrabold">{{ $novel->title }}</h3>
-                            <p class="mt-1 text-sm text-[#77747a]">
+                            <p class="mt-1 text-sm text-[var(--site-muted)]">
                                 {{ $novel->user->nickname ?: $novel->user->name }} · {{ $novel->chapters_count }} فصل
                             </p>
                         </div>

@@ -8,7 +8,7 @@
 <div class="container mx-auto max-w-6xl px-4 py-10" dir="rtl">
 
     <header class="mb-10 text-right">
-        <p class="text-sm font-bold text-purple-500">SARD AUDIO</p>
+        <p class="text-sm font-bold text-[var(--site-accent)]">SARD AUDIO</p>
         <h1 class="mt-2 text-3xl font-bold">البودكاست والحلقات الصوتية</h1>
         <p class="mt-3 text-gray-500">
             اكتشف أصواتًا وحكايات من مجتمع سرد.
@@ -70,7 +70,7 @@
                         <button
                             type="button"
                             id="startRecording"
-                            class="rounded-lg bg-purple-700 px-6 py-3 font-bold text-white">
+                            class="rounded-lg bg-[#29272b] px-6 py-3 font-bold text-white">
                             بدء التسجيل
                         </button>
 
@@ -96,7 +96,7 @@
 
                 </div>
 
-                <div class="my-5 text-center text-sm text-gray-400">
+                <div class="my-5 text-center text-sm text-gray-500">
                     أو
                 </div>
 
@@ -114,7 +114,7 @@
 
                 <button
                     type="submit"
-                    class="w-full rounded-lg bg-purple-700 px-6 py-3 font-bold text-white">
+                    class="w-full rounded-lg bg-[#29272b] px-6 py-3 font-bold text-white">
                     نشر الحلقة
                 </button>
 
@@ -135,7 +135,7 @@
 
             <article class="rounded-2xl border p-5">
 
-                <div class="mb-4 flex h-36 items-center justify-center rounded-xl bg-gradient-to-br from-violet-950 to-purple-700 text-5xl">
+                <div class="mb-4 flex h-36 items-center justify-center rounded-xl bg-gradient-to-br from-[#29272b] to-[#5c4c3e] text-5xl">
                     🎧
                 </div>
 
@@ -157,7 +157,7 @@
 
                 <a
                     href="{{ route('creators.show', $episode->user) }}"
-                    class="mt-4 inline-block text-sm font-semibold text-purple-600">
+                    class="mt-4 inline-block text-sm font-semibold text-[var(--site-accent)]">
                     اكتشف صاحب الحلقة ←
                 </a>
 
@@ -176,7 +176,7 @@
 
                     <ul class="space-y-2">
                         @foreach ($episode->comments as $comment)
-                            <li class="rounded-lg bg-[#f7f6f4] p-3 text-sm">
+                            <li class="rounded-lg bg-[var(--site-soft)] p-3 text-sm">
                                 <p class="font-bold">{{ $comment->user->name }}</p>
                                 <p class="mt-1 break-words">{{ $comment->body }}</p>
 
@@ -201,7 +201,7 @@
                             <button type="submit" class="btn-secondary">إرسال</button>
                         </form>
                     @else
-                        <a href="{{ route('login') }}" class="mt-3 inline-block text-sm font-semibold text-purple-600">سجّل الدخول للرد</a>
+                        <a href="{{ route('login') }}" class="mt-3 inline-block text-sm font-semibold text-[var(--site-accent)]">سجّل الدخول للرد</a>
                     @endauth
                 </section>
 

@@ -8,21 +8,33 @@
 
     /* ألوان الهوية الموحدة */
     --color-tuwaiq-purple: #29272b;
-    --color-tuwaiq-purple-light: #454149;
-    --color-tuwaiq-orange: #a58c70;
+    --color-tuwaiq-purple-light: #45413a;
+    --color-tuwaiq-orange: #94745b;
     --color-tuwaiq-teal: #82948a;
     --color-tuwaiq-text: #29272b;
     --color-white: #ffffff;
+
+    /* درجات رمادية دافئة تطابق ألوان الصفحة الرئيسية */
+    --color-gray-50: #f8f7f3;
+    --color-gray-100: #f0ece5;
+    --color-gray-200: #e7e2d9;
+    --color-gray-300: #d6cfc3;
+    --color-gray-400: #a39c8f;
+    --color-gray-500: #77736b;
+    --color-gray-600: #5f5b53;
+    --color-gray-700: #47443e;
+    --color-gray-800: #2f2d28;
+    --color-gray-900: #24241f;
 }
 
 :root {
-    --site-bg: #ffffff;
-    --site-surface: #ffffff;
-    --site-soft: #f7f6f4;
-    --site-text: #29272b;
-    --site-muted: #77747a;
-    --site-border: #e9e7e4;
-    --site-accent: #66556f;
+    --site-bg: #f8f7f3;
+    --site-surface: #fffefa;
+    --site-soft: #f0ece5;
+    --site-text: #24241f;
+    --site-muted: #77736b;
+    --site-border: #e7e2d9;
+    --site-accent: #94745b;
 
     --site-radius: 14px;
     --site-width: 1200px;
@@ -45,8 +57,10 @@ body {
     line-height: 1.8;
 }
 
-a {
-    color: inherit;
+@layer base {
+    a {
+        color: inherit;
+    }
 }
 
 button,
@@ -88,7 +102,7 @@ img {
 
     .input {
         @apply w-full rounded-xl px-4 py-3 transition;
-        background: #ffffff;
+        background: var(--site-surface);
         color: var(--site-text);
         border: 1px solid var(--site-border);
     }
@@ -250,7 +264,7 @@ img {
 
 .qi-filter {
     border: 1px solid var(--site-border);
-    background: white;
+    background: var(--site-surface);
     color: var(--site-text);
     border-radius: 30px;
     padding: 9px 18px;
@@ -297,7 +311,7 @@ img {
 ================================= */
 
 .qi-form {
-    background: white;
+    background: var(--site-surface);
     border: 1px solid var(--site-border);
     border-radius: var(--site-radius);
     padding: 24px;
@@ -309,7 +323,7 @@ img {
     border: 1px solid var(--site-border);
     border-radius: 10px;
     padding: 12px 14px;
-    background: white;
+    background: var(--site-surface);
     color: var(--site-text);
     margin-top: 7px;
     margin-bottom: 18px;
@@ -352,12 +366,12 @@ img {
    القائمة والتذييل
 ================================= */
 
-nav {
-    background: white;
+.quoteit-nav {
+    background: var(--site-surface);
 }
 
 footer {
-    background: white;
+    background: var(--site-surface);
     border-top: 1px solid var(--site-border);
 }
 
@@ -366,7 +380,7 @@ footer {
 ================================= */
 
 html[data-theme="light"] body {
-    background: white !important;
+    background: var(--site-bg) !important;
     color: var(--site-text) !important;
 }
 
@@ -427,12 +441,12 @@ html.reduce-motion *::after {
 html[data-theme="dark"] {
     color-scheme: dark;
 
-    --site-bg: #181719;
-    --site-surface: #232226;
-    --site-soft: #2d2b30;
+    --site-bg: #1a1916;
+    --site-surface: #25231f;
+    --site-soft: #2f2c28;
     --site-text: #f4f1ed;
-    --site-muted: #b7b1b8;
-    --site-border: #403d43;
+    --site-muted: #b9b3a8;
+    --site-border: #413d37;
     --site-accent: #c6a980;
 }
 
@@ -441,7 +455,7 @@ html[data-theme="dark"] body {
     color: var(--site-text) !important;
 }
 
-html[data-theme="dark"] nav,
+html[data-theme="dark"] .quoteit-nav,
 html[data-theme="dark"] footer {
     background: var(--site-surface) !important;
     color: var(--site-text) !important;
@@ -531,9 +545,12 @@ html[data-theme="dark"] .label {
     color: var(--site-text) !important;
 }
 
+html[data-theme="dark"] .text-gray-400,
 html[data-theme="dark"] .text-gray-500,
 html[data-theme="dark"] .text-gray-600,
-html[data-theme="dark"] .text-gray-700 {
+html[data-theme="dark"] .text-gray-700,
+html[data-theme="dark"] .text-gray-800,
+html[data-theme="dark"] .text-gray-900 {
     color: var(--site-muted) !important;
 }
 
@@ -555,13 +572,13 @@ html.high-contrast button {
 ================================= */
 
 :root {
-    --site-bg: #faf9f6;
-    --site-surface: #ffffff;
-    --site-soft: #f1eee8;
-    --site-text: #292824;
-    --site-muted: #77736c;
-    --site-border: #e8e3da;
-    --site-accent: #9a8065;
+    --site-bg: #f8f7f3;
+    --site-surface: #fffefa;
+    --site-soft: #f0ece5;
+    --site-text: #24241f;
+    --site-muted: #77736b;
+    --site-border: #e7e2d9;
+    --site-accent: #94745b;
     --site-radius: 4px;
     --site-width: 1120px;
 }
@@ -634,4 +651,27 @@ html.high-contrast button {
 
 .btn-secondary {
     border-radius: 4px;
+}
+
+/* لوحة موحدة: الحدود والبطاقات تتبع ألوان الصفحة الرئيسية */
+@layer base {
+    *,
+    ::before,
+    ::after {
+        border-color: var(--site-border);
+    }
+}
+
+main .rounded-2xl.border:not(.text-white),
+main .rounded-xl.border:not(.text-white) {
+    background: var(--site-surface);
+}
+
+.btn-danger {
+    color: #b3261e;
+}
+
+html[data-theme="dark"] .text-red-700,
+html[data-theme="dark"] .btn-danger {
+    color: #f4a79c !important;
 }

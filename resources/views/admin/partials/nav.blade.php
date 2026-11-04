@@ -10,14 +10,14 @@
 @endphp
 
 <header class="mb-6">
-    <p class="text-sm font-bold text-[#a58c70]">سرد</p>
+    <p class="text-sm font-bold text-[var(--site-accent)]">سرد</p>
     <h1 class="mt-1 text-3xl font-extrabold">لوحة التحكم</h1>
 
-    <nav aria-label="أقسام لوحة التحكم" class="mt-5 flex gap-2 overflow-x-auto border-b border-[#e9e7e4] pb-3">
+    <nav aria-label="أقسام لوحة التحكم" class="mt-5 flex gap-2 overflow-x-auto border-b border-[var(--site-border)] pb-3">
         @foreach ($adminLinks as $adminLink)
             <a href="{{ route($adminLink['route']) }}"
                @if (request()->routeIs($adminLink['match'])) aria-current="page" @endif
-               class="whitespace-nowrap rounded-lg px-4 py-2.5 text-sm font-bold {{ request()->routeIs($adminLink['match']) ? 'bg-[#29272b] !text-white' : 'bg-[#f7f6f4] text-[#29272b]' }}">
+               class="whitespace-nowrap rounded-lg px-4 py-2.5 text-sm font-bold {{ request()->routeIs($adminLink['match']) ? 'bg-[var(--site-text)] !text-[var(--site-bg)]' : 'bg-[var(--site-soft)] text-[#29272b]' }}">
                 {{ $adminLink['name'] }}
             </a>
         @endforeach

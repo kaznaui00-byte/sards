@@ -17,21 +17,21 @@
 
     <form method="GET" action="{{ route('admin.users.index') }}" class="mb-5 flex gap-2">
         <input type="search" name="search" value="{{ $search }}" placeholder="ابحث بالاسم أو البريد" aria-label="ابحث بالاسم أو البريد"
-               class="min-w-0 flex-1 rounded-lg border border-[#e9e7e4] bg-white px-3 py-2.5">
+               class="min-w-0 flex-1 rounded-lg border border-[var(--site-border)] bg-white px-3 py-2.5">
         <button type="submit" class="btn-secondary">بحث</button>
     </form>
 
     <ul class="space-y-3">
         @forelse ($users as $listedUser)
-            <li class="rounded-xl border border-[#e9e7e4] bg-white p-4">
+            <li class="rounded-xl border border-[var(--site-border)] bg-white p-4">
                 <p class="font-bold">
                     {{ $listedUser->name }}
                     @if ($listedUser->is_admin)
                         <span class="mr-1 rounded bg-[#29272b] px-2 py-0.5 text-xs text-white">أدمن</span>
                     @endif
                 </p>
-                <p class="text-sm break-all text-[#77747a]">{{ $listedUser->email }}</p>
-                <p class="mt-1 text-sm text-[#77747a]">
+                <p class="text-sm break-all text-[var(--site-muted)]">{{ $listedUser->email }}</p>
+                <p class="mt-1 text-sm text-[var(--site-muted)]">
                     انضم {{ $listedUser->created_at?->format('Y/m/d') }} · {{ $listedUser->quotes_count }} منشور
                 </p>
 
@@ -51,13 +51,13 @@
                         <form method="POST" action="{{ route('admin.users.destroy', $listedUser) }}" onsubmit="return confirm('سيُحذف المستخدم وكل محتواه نهائيًا. هل تريد المتابعة؟')">
                             @csrf
                             @method('DELETE')
-                            <button type="submit" class="btn-secondary !text-red-700">حذف</button>
+                            <button type="submit" class="btn-secondary btn-danger">حذف</button>
                         </form>
                     </div>
                 @endif
             </li>
         @empty
-            <li class="rounded-xl border border-[#e9e7e4] bg-white p-6 text-center text-[#77747a]">لا توجد نتائج.</li>
+            <li class="rounded-xl border border-[var(--site-border)] bg-white p-6 text-center text-[var(--site-muted)]">لا توجد نتائج.</li>
         @endforelse
     </ul>
 
