@@ -1,0 +1,636 @@
+@import 'tailwindcss';
+
+@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+@source '../../storage/framework/views/*.php';
+
+@theme {
+    --font-sans: 'Noto Sans Arabic', 'Tahoma', ui-sans-serif, system-ui, sans-serif;
+
+    /* ألوان الهوية الموحدة */
+    --color-tuwaiq-purple: #29272b;
+    --color-tuwaiq-purple-light: #454149;
+    --color-tuwaiq-orange: #a58c70;
+    --color-tuwaiq-teal: #82948a;
+    --color-tuwaiq-text: #29272b;
+    --color-white: #ffffff;
+}
+
+:root {
+    --site-bg: #ffffff;
+    --site-surface: #ffffff;
+    --site-soft: #f7f6f4;
+    --site-text: #29272b;
+    --site-muted: #77747a;
+    --site-border: #e9e7e4;
+    --site-accent: #66556f;
+
+    --site-radius: 14px;
+    --site-width: 1200px;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    margin: 0;
+    background: var(--site-bg) !important;
+    background-image: none !important;
+    color: var(--site-text);
+    font-family: var(--font-sans);
+    line-height: 1.8;
+}
+
+a {
+    color: inherit;
+}
+
+button,
+input,
+textarea,
+select {
+    font: inherit;
+}
+
+button {
+    cursor: pointer;
+}
+
+img {
+    max-width: 100%;
+}
+
+/* =================================
+   الأزرار الموحدة
+================================= */
+
+@layer components {
+    .btn-primary {
+        @apply inline-flex items-center justify-center rounded-xl px-6 py-3 font-semibold text-white shadow-sm transition hover:opacity-85;
+        background: var(--site-text);
+    }
+
+    .btn-secondary {
+        @apply inline-flex items-center justify-center rounded-xl px-5 py-2 font-semibold transition;
+        color: var(--site-text);
+        background: var(--site-soft);
+        border: 1px solid var(--site-border);
+    }
+
+    .label {
+        @apply block mb-2 font-semibold;
+        color: var(--site-text);
+    }
+
+    .input {
+        @apply w-full rounded-xl px-4 py-3 transition;
+        background: #ffffff;
+        color: var(--site-text);
+        border: 1px solid var(--site-border);
+    }
+
+    .input::placeholder {
+        color: #a09da2;
+    }
+
+    .input:focus {
+        outline: none;
+        border-color: #777078;
+        box-shadow: 0 0 0 3px rgb(41 39 43 / 8%);
+    }
+}
+
+/* =================================
+   القالب المشترك لكل الصفحات
+================================= */
+
+.qi-page {
+    direction: rtl;
+    min-height: 70vh;
+    background: var(--site-bg);
+    color: var(--site-text);
+}
+
+.qi-container {
+    width: min(100% - 40px, var(--site-width));
+    margin-inline: auto;
+}
+
+.qi-page-header {
+    padding-block: 45px 30px;
+    border-bottom: 1px solid var(--site-border);
+    margin-bottom: 35px;
+}
+
+.qi-eyebrow {
+    color: var(--site-muted);
+    font-size: 13px;
+    font-weight: 700;
+    margin-bottom: 10px;
+}
+
+.qi-page-title {
+    font-size: clamp(28px, 4vw, 42px);
+    font-weight: 900;
+    line-height: 1.4;
+    letter-spacing: -1px;
+    margin: 0;
+}
+
+.qi-page-description {
+    color: var(--site-muted);
+    font-size: 16px;
+    line-height: 2;
+    max-width: 700px;
+    margin-top: 12px;
+}
+
+/* =================================
+   عناوين الأقسام
+================================= */
+
+.qi-section {
+    margin-block: 45px;
+}
+
+.qi-section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.qi-section-title {
+    font-size: 23px;
+    font-weight: 850;
+    margin: 0;
+}
+
+.qi-more {
+    color: var(--site-muted);
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.qi-more:hover {
+    color: var(--site-text);
+}
+
+/* =================================
+   بطاقات المحتوى
+================================= */
+
+.qi-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 22px;
+}
+
+.qi-card {
+    background: var(--site-surface);
+    border: 1px solid var(--site-border);
+    border-radius: var(--site-radius);
+    overflow: hidden;
+    transition: box-shadow .2s ease, transform .2s ease;
+}
+
+.qi-card:hover {
+    box-shadow: 0 8px 25px rgb(0 0 0 / 6%);
+    transform: translateY(-2px);
+}
+
+.qi-card-image {
+    width: 100%;
+    aspect-ratio: 16 / 10;
+    object-fit: cover;
+    display: block;
+    background: var(--site-soft);
+}
+
+.qi-card-body {
+    padding: 18px;
+}
+
+.qi-card-title {
+    font-size: 18px;
+    font-weight: 800;
+    line-height: 1.6;
+    margin: 0 0 8px;
+}
+
+.qi-card-description {
+    color: var(--site-muted);
+    font-size: 14px;
+    line-height: 1.9;
+}
+
+.qi-meta {
+    color: var(--site-muted);
+    font-size: 12px;
+    margin-top: 12px;
+}
+
+/* =================================
+   التصنيفات والفلاتر
+================================= */
+
+.qi-filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-block: 25px;
+}
+
+.qi-filter {
+    border: 1px solid var(--site-border);
+    background: white;
+    color: var(--site-text);
+    border-radius: 30px;
+    padding: 9px 18px;
+    text-decoration: none;
+    font-size: 14px;
+    transition: .2s;
+}
+
+.qi-filter:hover,
+.qi-filter.active {
+    color: white;
+    background: var(--site-text);
+    border-color: var(--site-text);
+}
+
+/* =================================
+   الاقتباسات
+================================= */
+
+.qi-quote-card {
+    border: 1px solid var(--site-border);
+    border-radius: var(--site-radius);
+    background: var(--site-soft);
+    padding: 22px;
+}
+
+.qi-quote-text {
+    font-size: 18px;
+    line-height: 2;
+    font-weight: 600;
+}
+
+/* =================================
+   مشغل الصوت
+================================= */
+
+.qi-audio {
+    width: 100%;
+    margin-top: 15px;
+}
+
+/* =================================
+   النماذج
+================================= */
+
+.qi-form {
+    background: white;
+    border: 1px solid var(--site-border);
+    border-radius: var(--site-radius);
+    padding: 24px;
+}
+
+.qi-field {
+    width: 100%;
+    display: block;
+    border: 1px solid var(--site-border);
+    border-radius: 10px;
+    padding: 12px 14px;
+    background: white;
+    color: var(--site-text);
+    margin-top: 7px;
+    margin-bottom: 18px;
+}
+
+.qi-field:focus {
+    outline: none;
+    border-color: #777078;
+}
+
+.qi-submit {
+    border: 0;
+    border-radius: 10px;
+    color: white;
+    background: var(--site-text);
+    padding: 12px 23px;
+    font-weight: 700;
+}
+
+/* =================================
+   الحالة الفارغة والرسائل
+================================= */
+
+.qi-empty {
+    background: var(--site-soft);
+    border: 1px solid var(--site-border);
+    border-radius: var(--site-radius);
+    padding: 35px 20px;
+    text-align: center;
+    color: var(--site-muted);
+}
+
+.qi-divider {
+    border: 0;
+    border-top: 1px solid var(--site-border);
+    margin-block: 30px;
+}
+
+/* =================================
+   القائمة والتذييل
+================================= */
+
+nav {
+    background: white;
+}
+
+footer {
+    background: white;
+    border-top: 1px solid var(--site-border);
+}
+
+/* =================================
+   دعم سهولة الوصول
+================================= */
+
+html[data-theme="light"] body {
+    background: white !important;
+    color: var(--site-text) !important;
+}
+
+html.high-contrast body,
+html.high-contrast nav,
+html.high-contrast main article,
+html.high-contrast footer {
+    background: black !important;
+    color: white !important;
+}
+
+html.high-contrast a,
+html.high-contrast button {
+    color: yellow !important;
+}
+
+html.reduce-motion *,
+html.reduce-motion *::before,
+html.reduce-motion *::after {
+    animation: none !important;
+    transition: none !important;
+    scroll-behavior: auto !important;
+}
+
+/* =================================
+   الشاشات الصغيرة
+================================= */
+
+@media (max-width: 800px) {
+    .qi-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 520px) {
+    .qi-container {
+        width: min(100% - 28px, var(--site-width));
+    }
+
+    .qi-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .qi-page-header {
+        padding-top: 30px;
+    }
+
+    .qi-section-title {
+        font-size: 20px;
+    }
+}
+
+
+/* =================================
+   QuoteIt - الوضع الليلي
+================================= */
+
+html[data-theme="dark"] {
+    color-scheme: dark;
+
+    --site-bg: #181719;
+    --site-surface: #232226;
+    --site-soft: #2d2b30;
+    --site-text: #f4f1ed;
+    --site-muted: #b7b1b8;
+    --site-border: #403d43;
+    --site-accent: #c6a980;
+}
+
+html[data-theme="dark"] body {
+    background: var(--site-bg) !important;
+    color: var(--site-text) !important;
+}
+
+html[data-theme="dark"] nav,
+html[data-theme="dark"] footer {
+    background: var(--site-surface) !important;
+    color: var(--site-text) !important;
+    border-color: var(--site-border) !important;
+}
+
+html[data-theme="dark"] nav a,
+html[data-theme="dark"] nav button,
+html[data-theme="dark"] footer p,
+html[data-theme="dark"] footer a {
+    color: var(--site-text) !important;
+}
+
+html[data-theme="dark"] main,
+html[data-theme="dark"] .qi-page {
+    background: var(--site-bg) !important;
+    color: var(--site-text) !important;
+}
+
+html[data-theme="dark"] .qi-card,
+html[data-theme="dark"] .qi-form,
+html[data-theme="dark"] .qi-empty,
+html[data-theme="dark"] .qi-audio,
+html[data-theme="dark"] .qi-home-cover-placeholder {
+    background: var(--site-surface) !important;
+    color: var(--site-text) !important;
+    border-color: var(--site-border) !important;
+}
+
+html[data-theme="dark"] .qi-meta,
+html[data-theme="dark"] .qi-eyebrow,
+html[data-theme="dark"] .qi-card-description,
+html[data-theme="dark"] .qi-page-description {
+    color: var(--site-muted) !important;
+}
+
+html[data-theme="dark"] .qi-section-title,
+html[data-theme="dark"] .qi-page-title,
+html[data-theme="dark"] .qi-card-title {
+    color: var(--site-text) !important;
+}
+
+html[data-theme="dark"] .qi-divider {
+    border-color: var(--site-border) !important;
+}
+
+html[data-theme="dark"] .qi-quote-text {
+    color: var(--site-text) !important;
+}
+
+html[data-theme="dark"] .qi-home-hero {
+    background: #29272b !important;
+}
+
+html[data-theme="dark"] .qi-home-hero-link {
+    background: #f4f1ed !important;
+    color: #29272b !important;
+}
+
+html[data-theme="dark"] .btn-primary {
+    background: #c6a980 !important;
+    color: #211e1b !important;
+}
+
+html[data-theme="dark"] .btn-secondary {
+    background: var(--site-soft) !important;
+    color: var(--site-text) !important;
+    border-color: var(--site-border) !important;
+}
+
+html[data-theme="dark"] input,
+html[data-theme="dark"] textarea,
+html[data-theme="dark"] select,
+html[data-theme="dark"] .qi-field,
+html[data-theme="dark"] .input {
+    background: var(--site-surface) !important;
+    color: var(--site-text) !important;
+    border-color: var(--site-border) !important;
+}
+
+html[data-theme="dark"] input::placeholder,
+html[data-theme="dark"] textarea::placeholder {
+    color: var(--site-muted) !important;
+}
+
+html[data-theme="dark"] .label {
+    color: var(--site-text) !important;
+}
+
+html[data-theme="dark"] .text-gray-500,
+html[data-theme="dark"] .text-gray-600,
+html[data-theme="dark"] .text-gray-700 {
+    color: var(--site-muted) !important;
+}
+
+html.high-contrast body,
+html.high-contrast nav,
+html.high-contrast main article,
+html.high-contrast footer {
+    background: black !important;
+    color: white !important;
+}
+
+html.high-contrast a,
+html.high-contrast button {
+    color: yellow !important;
+}
+
+/* =================================
+   هوية سرد | SARD
+================================= */
+
+:root {
+    --site-bg: #faf9f6;
+    --site-surface: #ffffff;
+    --site-soft: #f1eee8;
+    --site-text: #292824;
+    --site-muted: #77736c;
+    --site-border: #e8e3da;
+    --site-accent: #9a8065;
+    --site-radius: 4px;
+    --site-width: 1120px;
+}
+
+.qi-page {
+    background: var(--site-bg);
+}
+
+.qi-container {
+    max-width: 1120px;
+}
+
+.qi-page-header {
+    padding-block: 75px 45px;
+    border-bottom: 1px solid var(--site-border);
+}
+
+.qi-eyebrow {
+    color: var(--site-accent);
+    letter-spacing: 1px;
+}
+
+.qi-page-title {
+    font-size: clamp(36px, 5vw, 54px);
+    letter-spacing: -1.5px;
+}
+
+.qi-page-description {
+    font-size: 17px;
+    max-width: 560px;
+}
+
+.qi-section-title {
+    font-size: 25px;
+}
+
+.qi-card {
+    border-radius: 4px;
+    box-shadow: none;
+}
+
+.qi-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 30px rgb(41 40 36 / 5%);
+}
+
+.qi-card-body {
+    padding: 28px;
+}
+
+.qi-quote-text {
+    font-size: clamp(21px, 3vw, 27px);
+    line-height: 2.1;
+    font-weight: 600;
+    color: var(--site-text);
+    margin-block: 20px;
+    padding-right: 18px;
+    border-right: 3px solid var(--site-accent);
+}
+
+.qi-form {
+    border-radius: 4px;
+}
+
+.btn-primary {
+    background: var(--site-text);
+    border-radius: 4px;
+}
+
+.btn-secondary {
+    border-radius: 4px;
+}

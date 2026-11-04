@@ -1,0 +1,16 @@
+
+.git
+.env
+.env.*
+!.env.example
+vendor/
+node_modules/
+sign-language-app/.git/
+sign-language-app/node_modules/
+.DS_Store
+*.save
+*.bak
+*.backup
+*.backup-*
+*.before_if_fix
+*.broken-backup

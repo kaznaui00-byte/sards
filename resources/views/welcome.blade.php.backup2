@@ -1,0 +1,304 @@
+353
+354
+355
+356
+357
+358
+359
+360
+361
+362
+363
+364
+365
+366
+367
+368
+369
+370
+371
+372
+373
+374
+375
+376
+377
+378
+379
+380
+381
+382
+383
+384
+385
+386
+387
+388
+389
+390
+391
+392
+393
+394
+395
+396
+397
+398
+399
+400
+401
+402
+403
+404
+405
+406
+407
+408
+409
+410
+411
+412
+413
+414
+415
+416
+417
+418
+419
+420
+421
+422
+423
+424
+425
+426
+427
+428
+429
+430
+431
+432
+433
+434
+435
+436
+437
+438
+439
+440
+441
+442
+443
+444
+445
+446
+447
+448
+449
+450
+451
+452
+453
+454
+455
+456
+457
+458
+459
+460
+461
+462
+463
+464
+465
+466
+467
+468
+469
+470
+471
+472
+473
+474
+475
+476
+477
+478
+479
+480
+481
+482
+483
+484
+485
+486
+487
+488
+489
+490
+491
+492
+493
+494
+495
+496
+                                <p class="qh-meta">قائل المقولة: {{ $quote->attribution }}</p>
+                            @endif
+                            <p class="qh-meta">{{ $quote->user->nickname ?: $quote->user->name }} · {{ $quote->created_at->format('Y/m/d') }}</p>
+                        </div>
+                        <div class="qh-card-interactions">
+                            <div class="qh-card-stats">
+                                <span>❤️ {{ $quote->likes->count() }}</span>
+                                <span>↻ {{ $quote->reposts->count() }}</span>
+                            </div>
+                            @auth
+                                <div class="qh-card-buttons">
+                                    <form action="{{ route('quotes.like', $quote) }}" method="POST">@csrf
+                                        <button type="submit" aria-label="إعجاب">{{ $liked ? '❤️ أعجبني' : '♡ إعجاب' }}</button>
+                                    </form>
+                                    <form action="{{ route('quotes.favorite', $quote) }}" method="POST">@csrf
+                                        <button type="submit" aria-label="حفظ في المفضلة">{{ $favorited ? '★ محفوظ' : '☆ حفظ' }}</button>
+                                    </form>
+                                    <form action="{{ route('quotes.repost', $quote) }}" method="POST">@csrf
+                                        <button type="submit" aria-label="إعادة نشر">{{ $reposted ? '↩ تمت' : '↻ إعادة نشر' }}</button>
+                                    </form>
+                                </div>
+                            @else
+                                <a class="qh-login-link" href="{{ route('login') }}">سجّلي الدخول للتفاعل</a>
+                            @endauth
+                        </div>
+                    </article>
+                @empty
+                    <div class="qh-empty">لا توجد اقتباسات منشورة حتى الآن.</div>
+                @endforelse
+            </div>
+        </section>
+
+        {{-- الحلقات الجديدة --}}
+        <section class="qh-section">
+            <div class="qh-section-header">
+                <h2 class="qh-section-heading">الحلقات الجديدة</h2>
+                <a href="{{ route('podcasts.index') }}" class="qh-more">جميع الحلقات ←</a>
+            </div>
+            <div class="qh-podcast-grid">
+                @forelse($latestEpisodes as $episode)
+                    <article class="qh-podcast-card">
+                        <div class="qh-podcast-cover" aria-hidden="true">🎙</div>
+                        <div class="qh-podcast-body">
+                            <div class="qh-podcast-kicker">بودكاست</div>
+                            <h3 class="qh-podcast-title">{{ $episode->title ?: 'تسجيل صوتي جديد' }}</h3>
+                            <p class="qh-meta">{{ $episode->user->nickname ?: $episode->user->name }}</p>
+                            <audio controls preload="none" class="qh-audio">
+                                <source src="{{ asset('storage/'.$episode->audio_path) }}">
+                            </audio>
+                            <div class="podcast-interactions">
+                                <div class="podcast-stats">
+                                    <span>❤️ {{ $episode->likes->count() }}</span>
+                                    <span>💬 {{ $episode->comments->count() }}</span>
+                                </div>
+                                @auth
+                                    @php $episodeLiked = $episode->likes->contains('user_id', auth()->id()); @endphp
+                                    <form action="{{ route('quotes.like', $episode) }}" method="POST">@csrf
+                                        <button type="submit" class="podcast-action-button">{{ $episodeLiked ? '❤️ أعجبني' : '♡ إعجاب' }}</button>
+                                    </form>
+                                    <form action="{{ route('podcasts.comments.store', $episode) }}" method="POST" class="podcast-comment-form">@csrf
+                                        <textarea name="body" rows="2" maxlength="500" required placeholder="اكتبي ردك على الحلقة..."></textarea>
+                                        <button type="submit" class="podcast-action-button">إرسال الرد</button>
+                                    </form>
+                                @else
+                                    <a href="{{ route('login') }}" class="qh-login-link">سجّلي الدخول للإعجاب والرد</a>
+                                @endauth
+                                <div class="podcast-comment-list">
+                                    @forelse($episode->comments as $comment)
+                                        <div class="podcast-comment">
+                                            <strong>{{ $comment->user->nickname ?: $comment->user->name }}</strong>
+                                            <p>{{ $comment->body }}</p>
+                                        </div>
+                                    @empty
+                                        <p class="podcast-no-comments">لا توجد ردود حتى الآن.</p>
+                                    @endforelse
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+                @empty
+                    <div class="qh-empty">ستظهر هنا أحدث الحلقات الصوتية.</div>
+                @endforelse
+            </div>
+        </section>
+
+        {{-- مكتبة الروايات --}}
+        <section class="qh-section">
+            <div class="qh-section-header">
+                <h2 class="qh-section-heading">من مكتبة الروايات</h2>
+                <a href="{{ route('novels.index') }}" class="qh-more">استكشفي المكتبة ←</a>
+            </div>
+            <div class="qh-novel-grid">
+                @forelse($latestNovels as $novel)
+                    <a href="{{ route('novels.show', $novel) }}" class="qh-novel-card">
+                        @if($novel->cover_image_path)
+                            <img src="{{ asset('storage/'.$novel->cover_image_path) }}" alt="{{ $novel->title }}">
+                        @else
+                            <div class="qh-novel-placeholder" aria-hidden="true">📚</div>
+                        @endif
+                        <h3>{{ $novel->title }}</h3>
+                        <p class="qh-meta">{{ $novel->user->nickname ?: $novel->user->name }} · {{ $novel->chapters_count }} فصل</p>
+                    </a>
+                @empty
+                    <div class="qh-empty">ستظهر هنا الروايات المنشورة.</div>
+                @endforelse
+            </div>
+        </section>
+
+        {{-- المبدعون --}}
+        <section class="qh-section">
+            <div class="qh-section-header">
+                <h2 class="qh-section-heading">المبدعون</h2>
+                <a href="{{ route('creators.index') }}" class="qh-more">اكتشفي المبدعين ←</a>
+            </div>
+            <div class="qh-creator-grid">
+                @forelse($featuredCreators as $creator)
+                    <a href="{{ route('creators.show', $creator) }}" class="qh-creator-card">
+                        @if($creator->avatar)
+                            <img src="{{ asset('storage/'.$creator->avatar) }}" class="qh-avatar" alt="{{ $creator->name }}">
+                        @else
+                            <div class="qh-avatar" aria-hidden="true">✦</div>
+                        @endif
+                        <h3>{{ $creator->nickname ?: $creator->name }}</h3>
+                        <p class="qh-meta">{{ $creator->creator_bio ?: 'مبدع في سرد' }}</p>
+                    </a>
+                @empty
+                    <div class="qh-empty">ستظهر هنا ملفات المبدعين المشاركين.</div>
+                @endforelse
+            </div>
+        </section>
+
+    </div>
+</div>
+
+<script>
+/* Preserve the existing AJAX behavior for likes, favorites and reposts. */
+document.addEventListener('submit', async function(event) {
+    const form = event.target;
+    if (!(form instanceof HTMLFormElement) || !form.closest('.qh-home')) return;
+
+    const action = form.action;
+    let kind = null;
+    if (action.includes('/like')) kind = 'like';
+    else if (action.includes('/favorite')) kind = 'favorite';
+    else if (action.includes('/repost')) kind = 'repost';
+    if (!kind) return;
+
+    event.preventDefault();
+    if (form.dataset.busy === 'true') return;
+    form.dataset.busy = 'true';
+
+    const button = form.querySelector('button[type="submit"]');
+    if (button) button.disabled = true;
+
+    try {
+        const response = await fetch(action, {
+            method: 'POST',
+            credentials: 'same-origin',
+            headers: { 'Accept': 'application/json', 'X-Requested-With': 'XMLHttpRequest' },
+            body: new FormData(form)
