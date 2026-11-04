@@ -1,27 +1,45 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Admin\SignLanguageController;
+use App\Http\Controllers\CreatorController;
+use App\Http\Controllers\FavoriteController;
+use App\Http\Controllers\NovelController;
+use App\Http\Controllers\PodcastController;
+use App\Http\Controllers\QuoteController;
+use App\Http\Controllers\StoryController;
+use App\Http\Requests\LoginRequest;
+use App\Models\Quote;
+use App\Models\User;
+use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Validation\Rule;
-
-use App\Models\User;
-use App\Http\Controllers\QuoteController;
-use App\Http\Controllers\PodcastController;
-use App\Http\Controllers\FavoriteController;
-use App\Http\Controllers\Admin\SignLanguageController;
-use App\Http\Requests\LoginRequest;
 use Illuminate\Support\Facades\Password;
-use Illuminate\Auth\Events\PasswordReset;
+use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use Illuminate\Validation\Rule;
 
 // ==========================================
 // HOME PAGE - PUBLIC BROWSING
 // ==========================================
 
-Route::get('/', fn () => 'Sard is working')->name('home');
+Route::get('/', function () {
+    return view('welcome', [
+        'page' => 'Home',
+        'latestQuotes' => Quote::with(['user', 'likes', 'reposts'])
+            ->where('post_type', 'text')
+            ->latest()
+            ->take(3)
+            ->get(),
+        'latestEpisodes' => Quote::with('user')
+            ->where('post_type', 'audio')
+            ->whereNotNull('audio_path')
+            ->latest()
+            ->take(3)
+            ->get(),
+    ]);
+})->name('home');
 
 // ==========================================
 // SIGN UP
@@ -29,7 +47,7 @@ Route::get('/', fn () => 'Sard is working')->name('home');
 
 Route::get('/signup', function () {
     return view('Authentication.SignUp', [
-        'page' => 'Sign Up'
+        'page' => 'Sign Up',
     ]);
 })->name('signup');
 
@@ -55,14 +73,13 @@ Route::post('/signup', function (Request $request) {
 
 })->name('signup.store');
 
-
 // ==========================================
 // LOGIN
 // ==========================================
 
 Route::get('/login', function () {
     return view('Authentication.LogIn', [
-        'page' => 'Log In'
+        'page' => 'Log In',
     ]);
 })->name('login');
 
@@ -106,7 +123,6 @@ Route::post('/forgot-password', function (Request $request) {
         ]);
 
 })->middleware('guest')->name('password.email');
-
 
 // RESET PASSWORD
 
@@ -158,9 +174,9 @@ Route::post('/reset-password', function (Request $request) {
 // LOGOUT
 // ==========================================
 
-Route::post('/logout', function (\Illuminate\Http\Request $request) {
+Route::post('/logout', function (Request $request) {
 
-    \Illuminate\Support\Facades\Auth::logout();
+    Auth::logout();
 
     $request->session()->invalidate();
 
@@ -177,11 +193,10 @@ Route::post('/logout', function (\Illuminate\Http\Request $request) {
 Route::get('/profile', function () {
 
     return view('profile.index', [
-        'page' => 'Profile'
+        'page' => 'Profile',
     ]);
 
 })->middleware('auth')->name('profile');
-
 
 // UPDATE PROFILE AND CREATOR INFORMATION
 
@@ -206,13 +221,13 @@ Route::put('/profile', function (Request $request) {
             'required',
             'string',
             'min:2',
-            'max:50'
+            'max:50',
         ],
 
         'nickname' => [
             'nullable',
             'string',
-            'max:50'
+            'max:50',
         ],
 
         'email' => [
@@ -268,7 +283,6 @@ Route::put('/profile', function (Request $request) {
 
     $user->birthdate = $validated['birthdate'] ?? null;
 
-
     // Creator information
 
     $user->creator_specialties =
@@ -279,7 +293,6 @@ Route::put('/profile', function (Request $request) {
 
     $user->show_in_creator_space =
         $request->boolean('show_in_creator_space');
-
 
     // Profile picture
 
@@ -306,7 +319,6 @@ Route::put('/profile', function (Request $request) {
 
 })->middleware('auth')->name('profile.update');
 
-
 // ==========================================
 // QUOTES AND AUDIO POSTS
 // ==========================================
@@ -332,7 +344,6 @@ Route::post('/quotes/{quote}/repost', [QuoteController::class, 'toggleRepost'])
     ->middleware('auth')
     ->name('quotes.repost');
 
-
 // Editing
 
 Route::get('/quotes/{quote}/edit', [QuoteController::class, 'edit'])
@@ -349,7 +360,6 @@ Route::delete('/quotes/{quote}', [QuoteController::class, 'destroy'])
     ->middleware('auth')
     ->name('quotes.destroy');
 
-
 // ==========================================
 // FAVORITES
 // ==========================================
@@ -362,7 +372,6 @@ Route::post('/quotes/{quote}/favorite', [FavoriteController::class, 'toggle'])
     ->middleware('auth')
     ->name('quotes.favorite');
 
-
 // ==========================================
 // ADMIN - SIGN LANGUAGE
 // ==========================================
@@ -374,21 +383,20 @@ Route::middleware('auth')
 
         Route::get('/sign-language', [
             SignLanguageController::class,
-            'index'
+            'index',
         ])->name('sign-language.index');
 
         Route::post('/sign-language/{quote}', [
             SignLanguageController::class,
-            'store'
+            'store',
         ])->name('sign-language.store');
 
         Route::delete('/sign-language/{quote}', [
             SignLanguageController::class,
-            'destroy'
+            'destroy',
         ])->name('sign-language.destroy');
 
     });
-
 
 // Sign language translator
 Route::get('/sign-language', function () {
@@ -397,19 +405,19 @@ Route::get('/sign-language', function () {
 
 // Public Creator Directory
 Route::get('/creators', [
-    \App\Http\Controllers\CreatorController::class,
-    'index'
+    CreatorController::class,
+    'index',
 ])->name('creators.index');
 
 Route::get('/creators/{user}', [
-    \App\Http\Controllers\CreatorController::class,
-    'show'
+    CreatorController::class,
+    'show',
 ])->name('creators.show');
 
 // Public Podcast Page
 Route::get('/podcasts', [
-    \App\Http\Controllers\PodcastController::class,
-    'index'
+    PodcastController::class,
+    'index',
 ])->name('podcasts.index');
 Route::post('/podcasts', [PodcastController::class, 'store'])
     ->middleware('auth')
@@ -417,46 +425,46 @@ Route::post('/podcasts', [PodcastController::class, 'store'])
 // قسم الروايات
 
 Route::get('/novels', [
-    \App\Http\Controllers\NovelController::class,
-    'index'
+    NovelController::class,
+    'index',
 ])->name('novels.index');
 
 Route::get('/novels/{novel}', [
-    \App\Http\Controllers\NovelController::class,
-    'show'
+    NovelController::class,
+    'show',
 ])->name('novels.show');
 
 Route::post('/novels', [
-    \App\Http\Controllers\NovelController::class,
-    'store'
+    NovelController::class,
+    'store',
 ])->middleware('auth')->name('novels.store');
 
 Route::delete('/novels/{novel}', [
-    \App\Http\Controllers\NovelController::class,
-    'destroy'
+    NovelController::class,
+    'destroy',
 ])->middleware('auth')->name('novels.destroy');
 // قسم القصص
 
 Route::get('/stories', [
-    \App\Http\Controllers\StoryController::class,
-    'index'
+    StoryController::class,
+    'index',
 ])->name('stories.index');
 
 Route::get('/stories/{story}', [
-    \App\Http\Controllers\StoryController::class,
-    'show'
+    StoryController::class,
+    'show',
 ])->name('stories.show');
 
 Route::post('/stories', [
-    \App\Http\Controllers\StoryController::class,
-    'store'
+    StoryController::class,
+    'store',
 ])->middleware('auth')->name('stories.store');
 
 Route::delete('/stories/{story}', [
-    \App\Http\Controllers\StoryController::class,
-    'destroy'
+    StoryController::class,
+    'destroy',
 ])->middleware('auth')->name('stories.destroy');
 Route::post('/podcasts/{quote}/comments', [
-    \App\Http\Controllers\PodcastController::class,
-    'storeComment'
+    PodcastController::class,
+    'storeComment',
 ])->middleware('auth')->name('podcasts.comments.store');
