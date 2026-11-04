@@ -45,7 +45,7 @@ class StoreQuoteRequest extends FormRequest
                 'nullable',
                 'file',
                 'mimes:mp3,m4a,wav,ogg,webm,mp4',
-                'max:10240',
+                'max:4096',
             ],
         ];
     }

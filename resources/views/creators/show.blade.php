@@ -1,6 +1,6 @@
 @extends('Layout.app')
 
-@section('title', 'Creator Profile | QuoteIt')
+@section('title', 'Creator Profile | سرد')
 
 @section('content')
 
@@ -17,7 +17,7 @@
 
             <img
                 src="{{ $user->avatar
-                    ? asset('storage/' . $user->avatar)
+                    ? \App\Support\Media::url($user->avatar)
                     : asset('images/profile.jpeg') }}"
                 alt="Creator profile"
                 class="h-28 w-28 rounded-full border object-cover"
@@ -29,7 +29,7 @@
                 </h1>
 
                 <p class="mt-3 leading-8 text-gray-500">
-                    {{ $user->creator_bio ?: 'مبدع في مجتمع QuoteIt.' }}
+                    {{ $user->creator_bio ?: 'مبدع في مجتمع سرد.' }}
                 </p>
             </div>
 
@@ -89,7 +89,7 @@
 
                         @if ($quote->audio_path)
                             <audio controls preload="none" class="w-full">
-                                <source src="{{ asset('storage/' . $quote->audio_path) }}">
+                                <source src="{{ \App\Support\Media::url($quote->audio_path) }}">
                             </audio>
                         @endif
 
@@ -109,7 +109,7 @@
                             </h3>
 
                             <video controls playsinline class="w-full rounded-xl">
-                                <source src="{{ asset('storage/' . $quote->sign_language_video_path) }}">
+                                <source src="{{ \App\Support\Media::url($quote->sign_language_video_path) }}">
                             </video>
                         </div>
 

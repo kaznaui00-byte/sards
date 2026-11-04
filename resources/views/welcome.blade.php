@@ -371,7 +371,7 @@ border-bottom: 1px solid #dedbd3;
 
                         @if($episode->audio_path)
                             <audio controls class="sard-audio">
-                                <source src="{{ asset('storage/'.$episode->audio_path) }}">
+                                <source src="{{ \App\Support\Media::url($episode->audio_path) }}">
                             </audio>
                         @endif
 

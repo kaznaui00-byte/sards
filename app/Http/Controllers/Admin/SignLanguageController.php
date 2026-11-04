@@ -35,14 +35,14 @@ class SignLanguageController extends Controller
                 'required',
                 'file',
                 'mimes:mp4,mov,webm',
-                'max:51200',
+                'max:4096',
             ],
         ]);
 
         $newPath = $request->file('video')
             ->store('sign-language', 'public');
 
-        if (!$newPath) {
+        if (! $newPath) {
             return back()->withErrors([
                 'video' => 'Unable to upload the video.',
             ]);

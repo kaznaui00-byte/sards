@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\QuoteController as AdminQuoteController;
 use App\Http\Controllers\Admin\SignLanguageController;
 use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\ChapterController;
 use App\Http\Controllers\CreatorController;
 use App\Http\Controllers\FavoriteController;
 use App\Http\Controllers\NovelController;
@@ -116,6 +117,12 @@ Route::post('/forgot-password', function (Request $request) {
     $request->validate([
         'email' => ['required', 'email'],
     ]);
+
+    if (app()->isProduction() && config('mail.default') === 'log') {
+        return back()->withErrors([
+            'email' => 'استعادة كلمة المرور عبر البريد غير متاحة حاليًا. تواصل مع إدارة الموقع.',
+        ]);
+    }
 
     $status = Password::sendResetLink(
         $request->only('email')
@@ -392,6 +399,7 @@ Route::middleware(['auth', 'admin'])
 
         Route::get('/users', [UserController::class, 'index'])->name('users.index');
         Route::patch('/users/{user}/admin', [UserController::class, 'toggleAdmin'])->name('users.toggle-admin');
+        Route::post('/users/{user}/reset-link', [UserController::class, 'resetLink'])->name('users.reset-link');
         Route::delete('/users/{user}', [UserController::class, 'destroy'])->name('users.destroy');
 
         Route::get('/content', [ContentController::class, 'index'])->name('content.index');
@@ -464,6 +472,23 @@ Route::delete('/novels/{novel}', [
     NovelController::class,
     'destroy',
 ])->middleware('auth')->name('novels.destroy');
+
+Route::scopeBindings()->group(function () {
+    Route::get('/novels/{novel}/chapters/{chapter}', [ChapterController::class, 'show'])
+        ->name('novels.chapters.show');
+
+    Route::delete('/novels/{novel}/chapters/{chapter}', [ChapterController::class, 'destroy'])
+        ->middleware('auth')
+        ->name('novels.chapters.destroy');
+});
+
+Route::post('/novels/{novel}/chapters', [ChapterController::class, 'store'])
+    ->middleware('auth')
+    ->name('novels.chapters.store');
+
+Route::delete('/podcasts/comments/{comment}', [PodcastController::class, 'destroyComment'])
+    ->middleware('auth')
+    ->name('podcasts.comments.destroy');
 // قسم القصص
 
 Route::get('/stories', [

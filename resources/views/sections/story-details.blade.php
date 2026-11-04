@@ -83,7 +83,7 @@
         @if ($story->cover_path)
             <img
                 class="story-cover"
-                src="{{ asset('storage/' . $story->cover_path) }}"
+                src="{{ \App\Support\Media::url($story->cover_path) }}"
                 alt="{{ $story->title }}"
             >
         @endif

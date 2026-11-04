@@ -1,6 +1,6 @@
 @extends('Layout.app')
 
-@section('title', 'الاقتباسات | QuoteIt')
+@section('title', 'الاقتباسات | سرد')
 
 @section('content')
 
@@ -11,7 +11,7 @@
         {{-- عنوان القسم --}}
         <header class="qi-page-header">
 
-            <div class="qi-eyebrow">QuoteIt · مساحة الكلمة</div>
+            <div class="qi-eyebrow">سرد · مساحة الكلمة</div>
 
             <h1 class="qi-page-title">الاقتباسات</h1>
 
@@ -91,7 +91,7 @@
                         </h3>
 
                         <p class="qi-card-description mb-4">
-                            اكتبي كلماتك وشاركيها مع مجتمع QuoteIt.
+                            اكتبي كلماتك وشاركيها مع مجتمع سرد.
                         </p>
 
                         <form
@@ -234,7 +234,7 @@
                             ></audio>
 
                             <p class="qi-meta mb-4">
-                                الحد الأعلى لحجم الملف 10 ميجابايت.
+                                الحد الأعلى لحجم الملف 4 ميجابايت.
                             </p>
 
                             <button type="submit" class="btn-primary w-full">
@@ -271,7 +271,7 @@
             <div class="qi-section-header">
 
                 <div>
-                    <div class="qi-eyebrow">من مجتمع QuoteIt</div>
+                    <div class="qi-eyebrow">من مجتمع سرد</div>
 
                     <h2 class="qi-section-title">
                         {{ !empty($search) ? 'نتائج البحث' : 'أحدث الاقتباسات' }}
@@ -313,7 +313,7 @@
                                             class="qi-audio"
                                             aria-label="تشغيل التسجيل الصوتي"
                                         >
-                                            <source src="{{ asset('storage/'.$quote->audio_path) }}">
+                                            <source src="{{ \App\Support\Media::url($quote->audio_path) }}">
                                             متصفحك لا يدعم تشغيل الصوت.
                                         </audio>
 

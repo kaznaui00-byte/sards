@@ -48,7 +48,7 @@ class StoryController extends Controller
                 'nullable',
                 'image',
                 'mimes:jpg,jpeg,png,webp',
-                'max:5120',
+                'max:4096',
             ],
         ]);
 

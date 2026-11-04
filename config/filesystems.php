@@ -39,7 +39,8 @@ return [
         ],
 
         'public' => [
-            'driver' => 'local',
+            'driver' => env('BLOB_READ_WRITE_TOKEN') ? 'vercel-blob' : 'local',
+            'token' => env('BLOB_READ_WRITE_TOKEN'),
             'root' => storage_path('app/public'),
             'url' => rtrim(env('APP_URL', 'http://localhost'), '/').'/storage',
             'visibility' => 'public',

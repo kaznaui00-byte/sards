@@ -1,7 +1,7 @@
 
 @extends('Layout.app')
 
-@section('title', 'QuoteIt')
+@section('title', 'سرد')
 
 @section('content')
 <div class="mx-auto max-w-6xl px-4 py-8 text-white sm:px-6">
@@ -15,7 +15,7 @@
             </span>
 
             <h1 class="mb-4 text-4xl font-extrabold leading-tight sm:text-5xl">
-                QuoteIt
+                سرد
             </h1>
 
             <h2 class="mb-3 text-2xl font-bold sm:text-3xl">
@@ -237,7 +237,7 @@
                         </audio>
 
                         <p class="text-xs text-gray-500">
-                            الحد الأقصى لحجم الملف 10 MB.
+                            الحد الأقصى لحجم الملف 4 ميجابايت.
                         </p>
 
                         <button type="submit"
@@ -318,7 +318,7 @@
             </div>
 
             <span class="text-sm text-gray-400">
-                كلمات وأصوات من مجتمع QuoteIt
+                كلمات وأصوات من مجتمع سرد
             </span>
         </div>
 
@@ -348,7 +348,7 @@
 
                         @if ($quote->audio_path)
                             <audio controls preload="none" class="mb-4 w-full">
-                                <source src="{{ asset('storage/' . $quote->audio_path) }}">
+                                <source src="{{ \App\Support\Media::url($quote->audio_path) }}">
                                 Your browser does not support audio playback.
                             </audio>
                         @else
@@ -412,7 +412,7 @@
                                 aria-label="Sign language translation"
                             >
                                 <source
-                                    src="{{ asset('storage/' . $quote->sign_language_video_path) }}"
+                                    src="{{ \App\Support\Media::url($quote->sign_language_video_path) }}"
                                 >
                                 Your browser does not support video playback.
                             </video>
@@ -544,7 +544,7 @@
 
     {{-- FOOTER --}}
     <footer class="mt-12 border-t border-white/10 py-6 text-center text-sm text-gray-500">
-        QuoteIt © {{ date('Y') }}
+        سرد © {{ date('Y') }}
         <p class="mt-1">Words to read. Voices to hear.</p>
     </footer>
 

@@ -246,3 +246,18 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
 });
+
+// Vercel rejects larger requests before they reach the app
+const MAX_UPLOAD_BYTES = 4 * 1024 * 1024;
+
+document.addEventListener('submit', (event) => {
+    const fileInputs = event.target.querySelectorAll('input[type="file"]');
+    const hasLargeFile = [...fileInputs].some((input) =>
+        [...input.files].some((file) => file.size > MAX_UPLOAD_BYTES),
+    );
+
+    if (hasLargeFile) {
+        event.preventDefault();
+        alert('حجم الملف أكبر من 4 ميجابايت. اختر ملفًا أصغر ثم حاول مرة أخرى.');
+    }
+});

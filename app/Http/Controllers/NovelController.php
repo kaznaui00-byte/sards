@@ -52,7 +52,7 @@ class NovelController extends Controller
             'chapters' => function ($query) {
                 $query->where('is_published', true)
                     ->orderBy('chapter_number');
-            }
+            },
         ]);
 
         return view('sections.novel-details', compact('novel'));
@@ -64,7 +64,7 @@ class NovelController extends Controller
         $validated = $request->validate([
             'title' => ['required', 'string', 'max:150'],
             'description' => ['nullable', 'string', 'max:5000'],
-            'cover_image' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:5120'],
+            'cover_image' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:4096'],
             'genre' => ['required', 'string', 'max:50'],
             'length_type' => ['required', 'in:short,long'],
             'status' => ['required', 'in:ongoing,completed'],
@@ -91,7 +91,7 @@ class NovelController extends Controller
     // حذف الرواية
     public function destroy(Novel $novel)
     {
-        abort_unless($novel->user_id === auth()->id(), 403);
+        abort_unless($novel->user_id === auth()->id() || auth()->user()->is_admin, 403);
 
         if ($novel->cover_image_path) {
             Storage::disk('public')->delete($novel->cover_image_path);

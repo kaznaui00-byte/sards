@@ -64,7 +64,7 @@
 
             <div class="mb-5">
                 <img
-                    src="{{ $user->avatar ? asset('storage/' . $user->avatar) : asset('images/profile.jpeg') }}"
+                    src="{{ $user->avatar ? \App\Support\Media::url($user->avatar) : asset('images/profile.jpeg') }}"
                     alt="Profile Picture"
                     class="mb-4 h-24 w-24 rounded-full border object-cover"
                 >
@@ -231,7 +231,7 @@
                     </strong>
 
                     <span class="mt-2 block text-sm text-gray-600">
-                        عند تفعيل هذا الخيار يستطيع زوار QuoteIt اكتشاف ملفك الإبداعي وتخصصاتك وأعمالك.
+                        عند تفعيل هذا الخيار يستطيع زوار سرد اكتشاف ملفك الإبداعي وتخصصاتك وأعمالك.
                         المشاركة اختيارية.
                     </span>
                 </span>
@@ -270,7 +270,7 @@
 
                     @if ($quote->audio_path)
                         <audio controls class="w-full">
-                            <source src="{{ asset('storage/' . $quote->audio_path) }}">
+                            <source src="{{ \App\Support\Media::url($quote->audio_path) }}">
                         </audio>
                     @endif
 

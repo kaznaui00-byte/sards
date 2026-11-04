@@ -198,7 +198,7 @@
 
         <p>
             لكل إنسان حكاية، ولكل حكاية كلمات تستحق أن تُروى.
-            اكتشفي القصص وشاركي حكايتك مع مجتمع QuoteIt.
+            اكتشفي القصص وشاركي حكايتك مع مجتمع سرد.
         </p>
     </header>
 
@@ -366,7 +366,7 @@
         </h2>
 
         <p style="color:#888;font-size:14px;margin-top:8px;">
-            اكتشفي حكايات كتبها أعضاء QuoteIt.
+            اكتشفي حكايات كتبها أعضاء سرد.
         </p>
 
     </div>
@@ -383,7 +383,7 @@
                     @if($story->cover_path)
 
                         <img
-                            src="{{ asset('storage/'.$story->cover_path) }}"
+                            src="{{ \App\Support\Media::url($story->cover_path) }}"
                             alt="{{ $story->title }}"
                         >
 

@@ -1,6 +1,6 @@
 @extends('Layout.app')
 
-@section('title', 'Discover Creators | QuoteIt')
+@section('title', 'Discover Creators | سرد')
 
 @section('content')
 
@@ -8,7 +8,7 @@
 
     <header class="mb-10">
         <p class="text-sm font-semibold text-purple-500">
-            QUOTEIT COMMUNITY
+            SARD COMMUNITY
         </p>
 
         <h1 class="mt-3 text-3xl font-bold">
@@ -69,7 +69,7 @@
 
                     <img
                         src="{{ $creator->avatar
-                            ? asset('storage/' . $creator->avatar)
+                            ? \App\Support\Media::url($creator->avatar)
                             : asset('images/profile.jpeg') }}"
                         alt="Creator profile"
                         class="h-16 w-16 rounded-full object-cover"
@@ -81,7 +81,7 @@
                         </h3>
 
                         <span class="text-sm text-gray-500">
-                            مبدع في QuoteIt
+                            مبدع في سرد
                         </span>
                     </div>
 

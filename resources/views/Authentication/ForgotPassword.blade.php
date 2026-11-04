@@ -13,7 +13,7 @@
     </p>
 
     @if(session('status'))
-        <p class="mb-4 text-green-300">{{ session('status') }}</p>
+        <p class="mb-4 text-green-700">{{ session('status') }}</p>
     @endif
 
     <label for="email">البريد الإلكتروني</label>

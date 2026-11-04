@@ -148,7 +148,7 @@
                 </p>
 
                 <audio controls preload="none" class="w-full">
-                    <source src="{{ asset('storage/' . $episode->audio_path) }}">
+                    <source src="{{ \App\Support\Media::url($episode->audio_path) }}">
                 </audio>
 
                 <p class="mt-4 text-xs text-gray-500">
@@ -160,6 +160,40 @@
                     class="mt-4 inline-block text-sm font-semibold text-purple-600">
                     اكتشف صاحب الحلقة ←
                 </a>
+
+                <section class="mt-5 border-t pt-4" aria-label="ردود الحلقة">
+                    <h3 class="mb-2 text-sm font-bold">الردود ({{ $episode->comments->count() }})</h3>
+
+                    <ul class="space-y-2">
+                        @foreach ($episode->comments as $comment)
+                            <li class="rounded-lg bg-[#f7f6f4] p-3 text-sm">
+                                <p class="font-bold">{{ $comment->user->name }}</p>
+                                <p class="mt-1 break-words">{{ $comment->body }}</p>
+
+                                @auth
+                                    @if ($comment->user_id === auth()->id() || auth()->user()->is_admin)
+                                        <form method="POST" action="{{ route('podcasts.comments.destroy', $comment) }}" class="mt-1">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="text-xs font-bold text-red-700">حذف</button>
+                                        </form>
+                                    @endif
+                                @endauth
+                            </li>
+                        @endforeach
+                    </ul>
+
+                    @auth
+                        <form method="POST" action="{{ route('podcasts.comments.store', $episode) }}" class="mt-3 flex gap-2">
+                            @csrf
+                            <input name="body" maxlength="500" required placeholder="اكتب ردك" aria-label="اكتب ردك"
+                                   class="min-w-0 flex-1 rounded-lg border px-3 py-2 text-sm">
+                            <button type="submit" class="btn-secondary">إرسال</button>
+                        </form>
+                    @else
+                        <a href="{{ route('login') }}" class="mt-3 inline-block text-sm font-semibold text-purple-600">سجّل الدخول للرد</a>
+                    @endauth
+                </section>
 
             </article>
 

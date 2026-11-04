@@ -30,6 +30,8 @@ RUN apt-get update && apt-get install -y libpq-dev libzip-dev libicu-dev libpng-
 
 ENV PORT=80
 
+RUN printf 'upload_max_filesize=5M\npost_max_size=6M\n' > /usr/local/etc/php/conf.d/uploads.ini
+
 WORKDIR /var/www/html
 
 COPY --from=vendor /app ./

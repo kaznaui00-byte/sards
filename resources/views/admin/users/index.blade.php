@@ -6,6 +6,15 @@
 <div class="mx-auto max-w-6xl px-4 py-8 sm:px-6">
     @include('admin.partials.nav')
 
+    @if (session('reset_link'))
+        <div role="status" class="mb-4 rounded-lg bg-amber-50 p-3 text-sm text-amber-900">
+            <p class="font-bold">رابط إعادة تعيين كلمة المرور لـ {{ session('reset_link.name') }}</p>
+            <p class="mt-1">انسخ الرابط وأرسله لصاحب الحساب فقط. يظهر مرة واحدة وتنتهي صلاحيته خلال ساعة.</p>
+            <input readonly value="{{ session('reset_link.url') }}" aria-label="رابط إعادة التعيين" onclick="this.select()"
+                   class="mt-2 w-full rounded-lg border border-amber-200 bg-white px-3 py-2 text-xs" dir="ltr">
+        </div>
+    @endif
+
     <form method="GET" action="{{ route('admin.users.index') }}" class="mb-5 flex gap-2">
         <input type="search" name="search" value="{{ $search }}" placeholder="ابحث بالاسم أو البريد" aria-label="ابحث بالاسم أو البريد"
                class="min-w-0 flex-1 rounded-lg border border-[#e9e7e4] bg-white px-3 py-2.5">
@@ -28,6 +37,11 @@
 
                 @if ($listedUser->isNot(auth()->user()))
                     <div class="mt-3 flex flex-wrap gap-2">
+                        <form method="POST" action="{{ route('admin.users.reset-link', $listedUser) }}">
+                            @csrf
+                            <button type="submit" class="btn-secondary">رابط كلمة مرور</button>
+                        </form>
+
                         <form method="POST" action="{{ route('admin.users.toggle-admin', $listedUser) }}">
                             @csrf
                             @method('PATCH')

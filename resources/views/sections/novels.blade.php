@@ -145,7 +145,7 @@
             <div>
                 <h1>الروايات</h1>
                 <div style="color:#806a91; font-size:13px; font-weight:600;">
-                    QuoteIt · عالم الأدب
+                    سرد · عالم الأدب
                 </div>
             </div>
         </div>
@@ -156,35 +156,117 @@
             يشاركها المبدعون معك.
         </p>
 
-        <div class="novels-categories">
-            <div class="novels-category active">جميع الروايات</div>
-            <div class="novels-category">روايات قصيرة</div>
-            <div class="novels-category">روايات طويلة</div>
-            <div class="novels-category">روايات مكتملة</div>
-            <div class="novels-category">روايات جديدة</div>
-        </div>
+        @if (session('success'))
+            <p role="status" class="mb-4 rounded-lg bg-green-50 p-3 text-sm font-bold text-green-800">{{ session('success') }}</p>
+        @endif
+
+        @php
+            $novelFilters = [
+                '' => 'جميع الروايات',
+                'short' => 'روايات قصيرة',
+                'long' => 'روايات طويلة',
+                'completed' => 'روايات مكتملة',
+                'ongoing' => 'روايات مستمرة',
+            ];
+        @endphp
+
+        <nav class="novels-categories" aria-label="تصنيف الروايات">
+            @foreach ($novelFilters as $filterKey => $filterLabel)
+                <a href="{{ route('novels.index', array_filter(['filter' => $filterKey])) }}"
+                   class="novels-category {{ (string) request('filter') === (string) $filterKey ? 'active' : '' }}"
+                   style="text-decoration:none;">{{ $filterLabel }}</a>
+            @endforeach
+        </nav>
+
+        @auth
+            <details class="mb-8 rounded-2xl border border-[#eee7f1] bg-white p-5" @if ($errors->any()) open @endif>
+                <summary class="cursor-pointer font-bold">＋ أضف روايتك</summary>
+
+                <form action="{{ route('novels.store') }}" method="POST" enctype="multipart/form-data" class="mt-4 space-y-3">
+                    @csrf
+
+                    <div>
+                        <label for="novel-title" class="mb-1 block font-bold">عنوان الرواية</label>
+                        <input id="novel-title" name="title" value="{{ old('title') }}" maxlength="150" required class="w-full rounded-lg border border-[#e9e7e4] bg-white px-3 py-2.5">
+                        @error('title') <p class="mt-1 text-sm text-red-700">{{ $message }}</p> @enderror
+                    </div>
+
+                    <div>
+                        <label for="novel-description" class="mb-1 block font-bold">نبذة عن الرواية</label>
+                        <textarea id="novel-description" name="description" rows="4" maxlength="5000" class="w-full rounded-lg border border-[#e9e7e4] bg-white px-3 py-2.5">{{ old('description') }}</textarea>
+                        @error('description') <p class="mt-1 text-sm text-red-700">{{ $message }}</p> @enderror
+                    </div>
+
+                    <div class="grid gap-3 sm:grid-cols-3">
+                        <div>
+                            <label for="novel-genre" class="mb-1 block font-bold">التصنيف</label>
+                            <input id="novel-genre" name="genre" value="{{ old('genre', 'عام') }}" maxlength="50" required class="w-full rounded-lg border border-[#e9e7e4] bg-white px-3 py-2.5">
+                            @error('genre') <p class="mt-1 text-sm text-red-700">{{ $message }}</p> @enderror
+                        </div>
+
+                        <div>
+                            <label for="novel-length" class="mb-1 block font-bold">الطول</label>
+                            <select id="novel-length" name="length_type" class="w-full rounded-lg border border-[#e9e7e4] bg-white px-3 py-2.5">
+                                <option value="short" @selected(old('length_type') === 'short')>قصيرة</option>
+                                <option value="long" @selected(old('length_type') === 'long')>طويلة</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label for="novel-status" class="mb-1 block font-bold">الحالة</label>
+                            <select id="novel-status" name="status" class="w-full rounded-lg border border-[#e9e7e4] bg-white px-3 py-2.5">
+                                <option value="ongoing" @selected(old('status') === 'ongoing')>مستمرة</option>
+                                <option value="completed" @selected(old('status') === 'completed')>مكتملة</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label for="novel-cover" class="mb-1 block font-bold">صورة الغلاف (اختياري، بحد أقصى 4 ميجابايت)</label>
+                        <input id="novel-cover" type="file" name="cover_image" accept=".jpg,.jpeg,.png,.webp" class="block w-full rounded-lg border border-[#e9e7e4] bg-white p-2.5">
+                        @error('cover_image') <p class="mt-1 text-sm text-red-700">{{ $message }}</p> @enderror
+                    </div>
+
+                    <button type="submit" class="btn-primary">نشر الرواية</button>
+                </form>
+            </details>
+        @endauth
 
         <div class="novels-section-heading">
             <h2>أحدث الروايات</h2>
             <span>اكتشف أحدث الأعمال الأدبية</span>
         </div>
 
-        <div class="novels-empty">
-            <div class="novels-empty-icon">
-                <svg width="38" height="38" viewBox="0 0 24 24" fill="none"
-                     stroke="currentColor" stroke-width="1.5">
-                    <path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v17H6.5A2.5 2.5 0 0 0 4 22V5.5Z"/>
-                    <path d="M4 6v16m4-14h8" stroke-linecap="round"/>
-                </svg>
+        @if ($novels->isEmpty())
+            <div class="novels-empty">
+                <div class="novels-empty-icon" aria-hidden="true">📖</div>
+                <h3>مساحة تنتظر رواياتكم</h3>
+                <p>
+                    لا توجد روايات منشورة حتى الآن.
+                    ستكون هنا مساحة لاكتشاف الروايات وقراءة أعمال المبدعين.
+                </p>
+            </div>
+        @else
+            <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                @foreach ($novels as $novel)
+                    <a href="{{ route('novels.show', $novel) }}" class="block overflow-hidden rounded-2xl border border-[#eee7f1] bg-white" style="color:#29252c; text-decoration:none;">
+                        @if ($novel->cover_image_path)
+                            <img src="{{ \App\Support\Media::url($novel->cover_image_path) }}" alt="غلاف {{ $novel->title }}" class="h-48 w-full object-cover">
+                        @endif
+
+                        <div class="p-4">
+                            <p class="text-xs font-bold text-[#806a91]">{{ $novel->genre }}</p>
+                            <h3 class="mt-1 text-lg font-extrabold">{{ $novel->title }}</h3>
+                            <p class="mt-1 text-sm text-[#77747a]">
+                                {{ $novel->user->nickname ?: $novel->user->name }} · {{ $novel->chapters_count }} فصل
+                            </p>
+                        </div>
+                    </a>
+                @endforeach
             </div>
 
-            <h3>مساحة تنتظر رواياتكم</h3>
-
-            <p>
-                لا توجد روايات منشورة حتى الآن.
-                ستكون هنا مساحة لاكتشاف الروايات وقراءة أعمال المبدعين.
-            </p>
-        </div>
+            <div class="mt-6">{{ $novels->links() }}</div>
+        @endif
 
     </div>
 </div>

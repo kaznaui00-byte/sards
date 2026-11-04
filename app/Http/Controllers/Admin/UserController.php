@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Password;
 use Illuminate\View\View;
 
 class UserController extends Controller
@@ -43,6 +44,20 @@ class UserController extends Controller
         $user->forceFill(['is_admin' => ! $user->is_admin])->save();
 
         return back()->with('success', 'تم تحديث الصلاحية.');
+    }
+
+    /**
+     * Create a one-time password reset link for the administrator to pass on.
+     */
+    public function resetLink(User $user): RedirectResponse
+    {
+        return back()->with('reset_link', [
+            'name' => $user->name,
+            'url' => route('password.reset', [
+                'token' => Password::createToken($user),
+                'email' => $user->email,
+            ]),
+        ]);
     }
 
     /**
