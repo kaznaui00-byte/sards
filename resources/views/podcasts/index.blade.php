@@ -161,6 +161,16 @@
                     اكتشف صاحب الحلقة ←
                 </a>
 
+                @auth
+                    @if ($episode->user_id === auth()->id())
+                        <form method="POST" action="{{ route('quotes.destroy', $episode) }}" class="mt-3" onsubmit="return confirm('هل تريد حذف هذه الحلقة نهائيًا؟')">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="text-sm font-bold text-red-700">حذف الحلقة</button>
+                        </form>
+                    @endif
+                @endauth
+
                 <section class="mt-5 border-t pt-4" aria-label="ردود الحلقة">
                     <h3 class="mb-2 text-sm font-bold">الردود ({{ $episode->comments->count() }})</h3>
 

@@ -100,6 +100,19 @@ it('lets users comment on episodes and delete their own comments only', function
     expect($comment->fresh())->toBeNull();
 });
 
+it('lets authors delete their own podcast episode', function () {
+    $author = User::factory()->create();
+    $episode = $author->quotes()->create(['title' => 'حلقة للحذف', 'post_type' => 'audio', 'audio_path' => 'quote-audios/a.mp3']);
+
+    $this->actingAs($author)->get(route('podcasts.index'))->assertSee('حذف الحلقة');
+
+    $this->actingAs(User::factory()->create())->get(route('podcasts.index'))->assertDontSee('حذف الحلقة');
+
+    $this->actingAs($author)->delete(route('quotes.destroy', $episode))->assertRedirect();
+
+    expect($episode->fresh())->toBeNull();
+});
+
 it('uses the Sard name in page titles', function () {
     $this->get(route('quotes.index'))->assertSee('الاقتباسات | سرد')->assertDontSee('QuoteIt');
 });

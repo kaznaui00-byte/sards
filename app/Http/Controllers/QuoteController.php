@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Quote;
 use App\Http\Requests\StoreQuoteRequest;
 use App\Http\Requests\UpdateQuoteRequest;
+use App\Models\Quote;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -21,11 +21,11 @@ class QuoteController extends Controller
         ])
             ->when($search, function ($query, $search) {
                 $query->where(function ($q) use ($search) {
-                    $q->where('text', 'like', '%' . $search . '%')
-                        ->orWhere('title', 'like', '%' . $search . '%')
-                        ->orWhere('attribution', 'like', '%' . $search . '%')
+                    $q->where('text', 'like', '%'.$search.'%')
+                        ->orWhere('title', 'like', '%'.$search.'%')
+                        ->orWhere('attribution', 'like', '%'.$search.'%')
                         ->orWhereHas('user', function ($userQuery) use ($search) {
-                            $userQuery->where('name', 'like', '%' . $search . '%');
+                            $userQuery->where('name', 'like', '%'.$search.'%');
                         });
                 });
             })
@@ -35,27 +35,27 @@ class QuoteController extends Controller
         return view('quotes.index', compact('quotes', 'search'));
     }
 
-   public function store(StoreQuoteRequest $request)
-{
-    $data = $request->validated();
+    public function store(StoreQuoteRequest $request)
+    {
+        $data = $request->validated();
 
-    // هذه الصفحة مخصصة للاقتباسات النصية فقط
-    if ($data['post_type'] !== 'text') {
-        abort(403, 'هذه الصفحة مخصصة للاقتباسات النصية فقط.');
-    }
+        // هذه الصفحة مخصصة للاقتباسات النصية فقط
+        if ($data['post_type'] !== 'text') {
+            abort(403, 'هذه الصفحة مخصصة للاقتباسات النصية فقط.');
+        }
 
-    $request->user()->quotes()->create([
-        'text' => $data['text'],
-        'attribution' => $request->input('attribution'),
-        'post_type' => 'text',
-        'title' => null,
-        'audio_path' => null,
-    ]);
+        $request->user()->quotes()->create([
+            'text' => $data['text'],
+            'attribution' => $request->input('attribution'),
+            'post_type' => 'text',
+            'title' => null,
+            'audio_path' => null,
+        ]);
 
-    return redirect()
-        ->route('quotes.index')
-        ->with('success', 'تم نشر الاقتباس بنجاح!');
-        if ($request-> expectsJson()) {
+        return redirect()
+            ->route('quotes.index')
+            ->with('success', 'تم نشر الاقتباس بنجاح!');
+        if ($request->expectsJson()) {
             return response()->json([
                 'success' => true,
                 'reposted' => $reposted,
@@ -67,67 +67,68 @@ class QuoteController extends Controller
         return back()->with('success', $message);
     }
 
-public function toggleLike(Request $request, Quote $quote)
-{
-    $like = $quote->likes()
-        ->where('user_id', $request->user()->id)
-        ->first();
+    public function toggleLike(Request $request, Quote $quote)
+    {
+        $like = $quote->likes()
+            ->where('user_id', $request->user()->id)
+            ->first();
 
-    if ($like) {
-        $like->delete();
-        $liked = false;
-        $message = 'تم إلغاء الإعجاب.';
-    } else {
-        $quote->likes()->create([
-            'user_id' => $request->user()->id,
-        ]);
+        if ($like) {
+            $like->delete();
+            $liked = false;
+            $message = 'تم إلغاء الإعجاب.';
+        } else {
+            $quote->likes()->create([
+                'user_id' => $request->user()->id,
+            ]);
 
-        $liked = true;
-        $message = 'تم تسجيل الإعجاب.';
+            $liked = true;
+            $message = 'تم تسجيل الإعجاب.';
+        }
+
+        if ($request->expectsJson()) {
+            return response()->json([
+                'success' => true,
+                'liked' => $liked,
+                'likes_count' => $quote->likes()->count(),
+                'message' => $message,
+            ]);
+        }
+
+        return back()->with('success', $message);
     }
 
-    if ($request->expectsJson()) {
-        return response()->json([
-            'success' => true,
-            'liked' => $liked,
-            'likes_count' => $quote->likes()->count(),
-            'message' => $message,
-        ]);
+    public function toggleRepost(Request $request, Quote $quote)
+    {
+        $repost = $quote->reposts()
+            ->where('user_id', $request->user()->id)
+            ->first();
+
+        if ($repost) {
+            $repost->delete();
+            $reposted = false;
+            $message = 'تم إلغاء إعادة النشر.';
+        } else {
+            $quote->reposts()->create([
+                'user_id' => $request->user()->id,
+            ]);
+
+            $reposted = true;
+            $message = 'تمت إعادة النشر بنجاح.';
+        }
+
+        if ($request->expectsJson()) {
+            return response()->json([
+                'success' => true,
+                'reposted' => $reposted,
+                'reposts_count' => $quote->reposts()->count(),
+                'message' => $message,
+            ]);
+        }
+
+        return back()->with('success', $message);
     }
 
-    return back()->with('success', $message);
-}
-
-public function toggleRepost(Request $request, Quote $quote)
-{
-    $repost = $quote->reposts()
-        ->where('user_id', $request->user()->id)
-        ->first();
-
-    if ($repost) {
-        $repost->delete();
-        $reposted = false;
-        $message = 'تم إلغاء إعادة النشر.';
-    } else {
-        $quote->reposts()->create([
-            'user_id' => $request->user()->id,
-        ]);
-
-        $reposted = true;
-        $message = 'تمت إعادة النشر بنجاح.';
-    }
-
-    if ($request->expectsJson()) {
-        return response()->json([
-            'success' => true,
-            'reposted' => $reposted,
-            'reposts_count' => $quote->reposts()->count(),
-            'message' => $message,
-        ]);
-    }
-
-    return back()->with('success', $message);
-}
     public function edit(Quote $quote)
     {
         abort_unless($quote->user_id === auth()->id(), 403);
@@ -155,7 +156,6 @@ public function toggleRepost(Request $request, Quote $quote)
 
         $quote->delete();
 
-        return redirect()->route('quotes.index')
-            ->with('success', 'تم حذف المنشور.');
+        return back()->with('success', 'تم حذف المنشور.');
     }
 }
