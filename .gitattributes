@@ -9,3 +9,9 @@
 /.github export-ignore
 CHANGELOG.md export-ignore
 .styleci.yml export-ignore
+
+*.before_fix export-ignore
+*.backup2 export-ignore
+*.backup3 export-ignore
+*.code-workspace export-ignore
+sard-page.html export-ignore

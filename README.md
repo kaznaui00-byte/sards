@@ -1,58 +1,79 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# سرد
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+منصة عربية للكلمة والصوت والحكاية. ينشر فيها المستخدمون الاقتباسات والحلقات الصوتية والقصص والروايات، وتضم أداة لترجمة لغة الإشارة العربية.
 
-## About Laravel
+**النسخة المنشورة:** https://sards.vercel.app
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## المزايا
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+- حسابات المستخدمين: التسجيل، والدخول، والملف الشخصي، واستعادة كلمة المرور.
+- الاقتباسات: النشر، والبحث، والإعجاب، وإعادة النشر، والمفضلة، والقراءة الصوتية.
+- البودكاست: رفع الحلقات أو تسجيلها من المتصفح، والردود عليها.
+- القصص والروايات: النشر، والتصنيف، وفصول الروايات.
+- مساحة المبدعين: ملفات عامة يختار أصحابها الظهور فيها.
+- ترجمة لغة الإشارة العربية داخل المتصفح.
+- لوحة تحكم لإدارة المنشورات والمستخدمين والمحتوى والمظهر.
+- واجهة عربية متجاوبة مع الجوال، مع وضع ليلي وخيارات لإمكانية الوصول.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## التقنيات
 
-## Learning Laravel
+Laravel 13 و PHP و Blade و Tailwind CSS 4 و Vite و Pest. وتعمل النسخة المنشورة على Vercel مع قاعدة بيانات Neon Postgres وتخزين الملفات في Vercel Blob.
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+## التشغيل على جهازك
 
-In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+المتطلبات: PHP 8.3 أو أحدث، و Composer، و Node.js 22 أو أحدث. لا تحتاج النسخة المحلية إلى أي خدمة خارجية، فهي تستخدم SQLite.
 
-You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
-
-## Agentic Development
-
-Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
+نفّذ الأوامر التالية من داخل مجلد المشروع:
 
 ```bash
-composer require laravel/boost --dev
-
-php artisan boost:install
+cp .env.example .env
+composer install
+npm ci
+npm run build
+php artisan key:generate
+touch database/database.sqlite
+php artisan migrate --seed
+php artisan storage:link
+php artisan serve
 ```
 
-Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
+ثم افتح http://127.0.0.1:8000
 
-## Contributing
+### الحساب التجريبي
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+| البريد | كلمة المرور | الصلاحية |
+|---|---|---|
+| `admin@sard.test` | `password` | أدمن |
 
-## Code of Conduct
+لوحة التحكم على الرابط `/admin`. هذا الحساب للتجربة المحلية فقط، ولا يوجد في النسخة المنشورة.
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+### تشغيل الاختبارات
 
-## Security Vulnerabilities
+```bash
+php artisan test
+```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+## بنية المشروع
 
-## License
+| المسار | المحتوى |
+|---|---|
+| `app/Http/Controllers` | منطق الصفحات، و `Admin/` للوحة التحكم |
+| `app/Filesystem/VercelBlobAdapter.php` | تخزين الملفات المرفوعة في Vercel Blob |
+| `resources/views` | صفحات الموقع |
+| `routes/web.php` | مسارات الموقع |
+| `database/migrations` | بنية قاعدة البيانات |
+| `database/seeders` | البيانات التجريبية |
+| `tests/Feature` | الاختبارات |
+| `sign-language-app` | الكود المصدري لتطبيق لغة الإشارة |
+| `public/sign-language-app` | النسخة الجاهزة التي يعرضها الموقع |
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+## ملاحظات
+
+- **رفع الملفات:** الحد الأقصى 4 ميجابايت للملف بسبب حد حجم الطلب في Vercel. تُحفظ الملفات محليًا إلا إذا ضُبط `BLOB_READ_WRITE_TOKEN`.
+- **البريد:** في النسخة المحلية تُكتب الرسائل في `storage/logs/laravel.log`. وتحتاج رسائل استعادة كلمة المرور في النسخة المنشورة إلى مزود بريد، ويستطيع الأدمن إلى ذلك الحين إنشاء رابط إعادة التعيين من لوحة التحكم.
+- **نموذج الجمل الكبير:** يعتمد تطبيق لغة الإشارة على نموذج داخل المتصفح. أما نموذج الخادم في `sign-language-app/server` فغير مشغّل في هذا النشر.
+
+## مصادر خارجية
+
+- **تطبيق لغة الإشارة (SLI):** تحت رخصة MIT، وحقوقه لـ Digital Fingers Team. راجع `sign-language-app/LICENSE` و `sign-language-app/README.md`.
+- **الأبيات في البيانات التجريبية:** من الشعر العربي، وطوبقت مع مصادر منها ويكي مصدر وقافية والأرشيف الشعري.

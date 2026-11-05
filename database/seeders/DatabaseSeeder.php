@@ -15,11 +15,13 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
-
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
+        $administrator = User::factory()->create([
+            'name' => 'مدير سرد',
+            'email' => 'admin@sard.test',
         ]);
+
+        $administrator->forceFill(['is_admin' => true])->save();
+
+        $this->call(QuoteSeeder::class);
     }
 }
